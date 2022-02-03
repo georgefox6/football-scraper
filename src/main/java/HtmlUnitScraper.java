@@ -1,6 +1,8 @@
 import Models.Player;
-import com.gargoylesoftware.htmlunit.*;
-import com.gargoylesoftware.htmlunit.html.*;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlTable;
+import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -18,14 +20,14 @@ public class HtmlUnitScraper {
         return emf.createEntityManager();
     }
 
-    public static int getStandardStats(HtmlPage htmlPage){
+    public static int getStandardStats(HtmlPage htmlPage) {
         int firstPlayerId = 0;
 
         String teamName = htmlPage.getTitleText().replace(" Stats, Premier League | FBref.com", "").replace("2021-2022 ", "");
 
         final HtmlTable table = htmlPage.getHtmlElementById("stats_standard_11160");
 
-        for (final HtmlTableRow row : table.getRows().subList(2,table.getRowCount() -2)) {
+        for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
             Player player = new Player();
             player.setPlayerName(row.getCell(0).asNormalizedText());
@@ -36,7 +38,7 @@ public class HtmlUnitScraper {
             try {
                 player.setMatchesPlayed(Integer.parseInt(row.getCell(4).asNormalizedText()));
                 player.setMatchesStarted(Integer.parseInt(row.getCell(5).asNormalizedText()));
-                player.setMinutesPlayed(Integer.parseInt(row.getCell(6).asNormalizedText()));
+                player.setMinutesPlayed(Integer.parseInt(row.getCell(6).asNormalizedText().replace(",", "")));
                 player.setGoals(Integer.parseInt(row.getCell(8).asNormalizedText()));
                 player.setAssists(Integer.parseInt(row.getCell(9).asNormalizedText()));
                 player.setExpectedGoals(Double.parseDouble(row.getCell(20).asNormalizedText()));
@@ -65,11 +67,11 @@ public class HtmlUnitScraper {
         return firstPlayerId;
     }
 
-    public static void getShootingStats(HtmlPage htmlPage, int firstPlayerId){
+    public static void getShootingStats(HtmlPage htmlPage, int firstPlayerId) {
 
         final HtmlTable table = htmlPage.getHtmlElementById("stats_shooting_11160");
 
-        for (final HtmlTableRow row : table.getRows().subList(2,table.getRowCount() -2)) {
+        for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
             //Read Player
             //retrieve player with id equal to firstPlayerId
@@ -79,17 +81,32 @@ public class HtmlUnitScraper {
 
             try {
                 player.setShots(Integer.parseInt(row.getCell(6).asNormalizedText()));
-                player.setShotsOnTarget(Integer.parseInt(row.getCell(7).asNormalizedText()));
-                player.setShotDistance(Double.parseDouble(row.getCell(13).asNormalizedText()));
-                player.setFreeKickShots(Integer.parseInt(row.getCell(14).asNormalizedText()));
-                player.setPenaltyScored(Integer.parseInt(row.getCell(15).asNormalizedText()));
-                player.setPenaltyShots(Integer.parseInt(row.getCell(16).asNormalizedText()));
             } catch (NumberFormatException e) {
                 player.setShots(0);
+            }
+            try {
+                player.setShotsOnTarget(Integer.parseInt(row.getCell(7).asNormalizedText()));
+            } catch (NumberFormatException e) {
                 player.setShotsOnTarget(0);
+            }
+            try {
+                player.setShotDistance(Double.parseDouble(row.getCell(13).asNormalizedText()));
+            } catch (NumberFormatException e) {
                 player.setShotDistance(0.0);
+            }
+            try {
+                player.setFreeKickShots(Integer.parseInt(row.getCell(14).asNormalizedText()));
+            } catch (NumberFormatException e) {
                 player.setFreeKickShots(0);
+            }
+            try {
+                player.setPenaltyScored(Integer.parseInt(row.getCell(15).asNormalizedText()));
+            } catch (NumberFormatException e) {
                 player.setPenaltyScored(0);
+            }
+            try {
+                player.setPenaltyShots(Integer.parseInt(row.getCell(16).asNormalizedText()));
+            } catch (NumberFormatException e) {
                 player.setPenaltyShots(0);
             }
 
@@ -97,15 +114,14 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
-
         }
     }
 
-    public static void getPassingStats(HtmlPage htmlPage, int firstPlayerId){
+    public static void getPassingStats(HtmlPage htmlPage, int firstPlayerId) {
 
         final HtmlTable table = htmlPage.getHtmlElementById("stats_passing_11160");
 
-        for (final HtmlTableRow row : table.getRows().subList(2,table.getRowCount() -2)) {
+        for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
             //Read Player
             //retrieve player with id equal to firstPlayerId
@@ -148,15 +164,14 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
-
         }
     }
 
-    public static void getDefenseStats(HtmlPage htmlPage, int firstPlayerId){
+    public static void getDefenseStats(HtmlPage htmlPage, int firstPlayerId) {
 
         final HtmlTable table = htmlPage.getHtmlElementById("stats_defense_11160");
 
-        for (final HtmlTableRow row : table.getRows().subList(2,table.getRowCount() -2)) {
+        for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
             //Read Player
             //retrieve player with id equal to firstPlayerId
@@ -196,15 +211,14 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
-
         }
     }
 
-    public static void getPossessionStats(HtmlPage htmlPage, int firstPlayerId){
+    public static void getPossessionStats(HtmlPage htmlPage, int firstPlayerId) {
 
         final HtmlTable table = htmlPage.getHtmlElementById("stats_possession_11160");
 
-        for (final HtmlTableRow row : table.getRows().subList(2,table.getRowCount() -2)) {
+        for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
             //Read Player
             //retrieve player with id equal to firstPlayerId
@@ -235,11 +249,11 @@ public class HtmlUnitScraper {
         }
     }
 
-    public static void getMiscStats(HtmlPage htmlPage, int firstPlayerId){
+    public static void getMiscStats(HtmlPage htmlPage, int firstPlayerId) {
 
         final HtmlTable table = htmlPage.getHtmlElementById("stats_misc_11160");
 
-        for (final HtmlTableRow row : table.getRows().subList(2,table.getRowCount() -2)) {
+        for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
             //Read Player
             //retrieve player with id equal to firstPlayerId
@@ -270,18 +284,34 @@ public class HtmlUnitScraper {
         }
     }
 
-    public static void getTransferStats(HtmlPage htmlPage){
-
+    public static void getTransferStats(HtmlPage htmlPage) {
 
 
         final HtmlTable table = htmlPage.getFirstByXPath("//*[@id=\"yw1\"]/table");
 
-        for (final HtmlTableRow row : table.getRows().subList(1,table.getRowCount())) {
+        for (final HtmlTableRow row : table.getRows().subList(1, table.getRowCount())) {
 
             String name = row.getCell(1).asNormalizedText().split("\\r?\\n")[0].trim();
 
+            //Special Exceptions
+            if (name.equals("Heung-min Son")) {
+                name = "Son Heung-min";
+            }
+
+            if (name.equals("Raphinha")) {
+                name = "Raphael Dias Belloli";
+            }
+
+            if (name.equals("Gabriel")) {
+                name = "Gabriel Dos Santos";
+            }
+
+            if (name.equals("Thiago")) {
+                name = "Thiago Alcántara";
+            }
+
             int height = 0;
-            if(!row.getCell(4).asNormalizedText().equals("")){
+            if (!row.getCell(4).asNormalizedText().replace(",", "").replace("m", "").trim().equals("")) {
                 height = Integer.parseInt(row.getCell(4).asNormalizedText().replace(",", "").replace("m", "").trim());
             }
             String preferredFoot = row.getCell(5).asNormalizedText();
@@ -289,30 +319,37 @@ public class HtmlUnitScraper {
             String marketValueString = row.getCell(9).asNormalizedText();
 
             int marketValue = 0;
-            if(marketValueString.contains("m")){
+            if (marketValueString.contains("m")) {
                 marketValue = (int) (Double.parseDouble(marketValueString.substring(1, marketValueString.indexOf('m'))) * 1000000);
-            } else if(marketValueString.contains("Th")){
+            } else if (marketValueString.contains("Th")) {
                 marketValue = (int) (Double.parseDouble(marketValueString.substring(1, marketValueString.indexOf('T'))) * 1000);
             }
-            
+
             name = StringUtils.stripAccents(name);
 
-            try{
-                if(queryForPlayersByName(name).isEmpty()){
+            try {
+
+                List<Player> playerList = findPlayer(name);
+                if (playerList == null || playerList.isEmpty()) {
+                    System.out.println("Player not found in the db - " + name);
                     continue;
                 }
-                Player player = queryForPlayersByName(name).get(0);
-                player.setHeight(height);
-                player.setPreferredFoot(preferredFoot);
-                player.setContractEndDate(contractEndDate);
-                player.setMarketValue(marketValue);
+                for (Player player : playerList) {
 
-                //Save the updated player in the database
-                em.getTransaction().begin();
-                em.merge(player);
-                em.getTransaction().commit();
 
-            } catch(IndexOutOfBoundsException ex){
+                    player.setHeight(height);
+                    player.setPreferredFoot(preferredFoot);
+                    player.setContractEndDate(contractEndDate);
+                    player.setMarketValue(marketValue);
+
+                    //Save the updated player in the database
+                    em.getTransaction().begin();
+                    em.merge(player);
+                    em.getTransaction().commit();
+                }
+
+
+            } catch (IndexOutOfBoundsException ex) {
                 ex.printStackTrace();
             }
 
@@ -324,33 +361,85 @@ public class HtmlUnitScraper {
 
         final HtmlTable table = htmlPage.getFirstByXPath("//*[@id=\"gatsby-focus-wrapper\"]/div[2]/main/div[1]/div/div[2]/div[3]/table");
 
-        for (final HtmlTableRow row : table.getRows().subList(1,table.getRowCount())) {
-            try {
-                String name = row.getCell(0).asNormalizedText();
-                String wageString = row.getCell(1).asNormalizedText();
-                int wage = Integer.parseInt(wageString.replace("£", "").replace(",", "").trim());
+        try {
+            for (final HtmlTableRow row : table.getRows().subList(1, table.getRowCount())) {
+                try {
 
-                name = StringUtils.stripAccents(name);
+                    String name = row.getCell(0).asNormalizedText();
+                    String wageString = row.getCell(1).asNormalizedText();
+                    int wage = Integer.parseInt(wageString.replace("£", "").replace(",", "").trim());
 
-                if(queryForPlayersByName(name).isEmpty()){
-                    continue;
+                    //Special Exceptions
+                    if (name.equals("Heung-min Son")) {
+                        name = "Son Heung-min";
+                    }
+
+                    if (name.equals("Raphinha")) {
+                        name = "Raphael Dias Belloli";
+                    }
+
+                    if (name.equals("Gabriel")) {
+                        name = "Gabriel Dos Santos";
+                    }
+
+                    if (name.equals("Thiago")) {
+                        name = "Thiago Alcántara";
+                    }
+
+                    List<Player> playerList = findPlayer(name);
+
+                    if (playerList == null || playerList.isEmpty()) {
+                        continue;
+                    }
+                    for (Player player : playerList) {
+                        player.setWage(wage);
+
+                        //Save the updated player in the database
+                        em.getTransaction().begin();
+                        em.merge(player);
+                        em.getTransaction().commit();
+                    }
+
+                } catch (IndexOutOfBoundsException ex) {
+                    //                ex.printStackTrace();
                 }
-
-                Player player = queryForPlayersByName(name).get(0);
-                player.setWage(wage);
-
-                //Save the updated player in the database
-                em.getTransaction().begin();
-                em.merge(player);
-                em.getTransaction().commit();
-
-            } catch(IndexOutOfBoundsException ex){
-                ex.printStackTrace();
             }
+
+            final HtmlTable secondTable = htmlPage.getFirstByXPath("//*[@id=\"gatsby-focus-wrapper\"]/div[2]/main/div[1]/div/div[2]/div[5]/table");
+
+            for (final HtmlTableRow row : secondTable.getRows().subList(1, table.getRowCount())) {
+                try {
+                    String name = row.getCell(0).asNormalizedText();
+                    String wageString = row.getCell(1).asNormalizedText();
+                    int wage = Integer.parseInt(wageString.replace("£", "").replace(",", "").trim());
+
+                    Player player = null;
+
+                    if (!queryForPlayersByName(name).isEmpty()) {
+                        player = queryForPlayersByName(name).get(0);
+                    }
+
+                    if (player == null) {
+                        continue;
+                    }
+                    player.setWage(wage);
+
+                    //Save the updated player in the database
+                    em.getTransaction().begin();
+                    em.merge(player);
+                    em.getTransaction().commit();
+
+                } catch (IndexOutOfBoundsException ex) {
+//                ex.printStackTrace();
+                }
+            }
+        } catch (Exception ex) {
+
         }
+
     }
 
-    public static List<String> getFBRefLinks(){
+    public static List<String> getFBRefLinks() {
         List<String> premierLeagueUrlFBRef = new ArrayList<>();
         premierLeagueUrlFBRef.add("https://fbref.com/en/squads/cff3d9bb/Chelsea-Stats");
         premierLeagueUrlFBRef.add("https://fbref.com/en/squads/b8fd03ef/Manchester-City-Stats");
@@ -376,7 +465,7 @@ public class HtmlUnitScraper {
         return premierLeagueUrlFBRef;
     }
 
-    public static List<String> getTransfermarktLinks(){
+    public static List<String> getTransfermarktLinks() {
         List<String> transfermarktLinks = new ArrayList<>();
         transfermarktLinks.add("https://www.transfermarkt.co.uk/manchester-city/kader/verein/281/saison_id/2021/plus/1");
         transfermarktLinks.add("https://www.transfermarkt.co.uk/manchester-united/kader/verein/985/saison_id/2021/plus/1");
@@ -404,6 +493,7 @@ public class HtmlUnitScraper {
 
     private static List<String> getSalarySportLinks() {
         List<String> salarySportLinks = new ArrayList<>();
+        salarySportLinks.add("https://salarysport.com/football/sky-bet-championship/norwich-city/");
         salarySportLinks.add("https://salarysport.com/football/premier-league/crystal-palace/");
         salarySportLinks.add("https://salarysport.com/football/premier-league/leicester-city/");
         salarySportLinks.add("https://salarysport.com/football/premier-league/arsenal-f.c./");
@@ -423,7 +513,6 @@ public class HtmlUnitScraper {
         salarySportLinks.add("https://salarysport.com/football/premier-league/wolverhampton-wanderers-f.c./");
         salarySportLinks.add("https://salarysport.com/football/sky-bet-championship/brentford/");
         salarySportLinks.add("https://salarysport.com/football/sky-bet-championship/watford/");
-        salarySportLinks.add("https://salarysport.com/football/sky-bet-championship/norwich-city/");
 
         return salarySportLinks;
     }
@@ -438,41 +527,130 @@ public class HtmlUnitScraper {
 
         List<String> premierLeagueUrlFBRef = getFBRefLinks();
 
-        for(String teamUrl : premierLeagueUrlFBRef){
+        for (String teamUrl : premierLeagueUrlFBRef) {
             HtmlPage htmlPage = webClient.getPage(teamUrl);
 
             int firstPlayerId = getStandardStats(htmlPage);
+
 
             getShootingStats(htmlPage, firstPlayerId);
             getPassingStats(htmlPage, firstPlayerId);
             getDefenseStats(htmlPage, firstPlayerId);
             getPossessionStats(htmlPage, firstPlayerId);
             getMiscStats(htmlPage, firstPlayerId);
+
+            System.out.println("Completed FB REF - " + teamUrl);
         }
 
         List<String> transfermarktPages = getTransfermarktLinks();
 
-        for(String page : transfermarktPages) {
+        for (String page : transfermarktPages) {
 
             HtmlPage htmlPage = webClient.getPage(page);
             getTransferStats(htmlPage);
+
+            System.out.println("Completed Transfermarkt - " + page);
 
         }
 
         List<String> salarySportLinks = getSalarySportLinks();
 
-        for(String page : salarySportLinks) {
+        for (String page : salarySportLinks) {
 
             HtmlPage htmlPage = webClient.getPage(page);
             getSalaryStats(htmlPage);
 
+            System.out.println("Completed Salary Sport - " + page);
         }
     }
+
     public static List<Player> queryForPlayersByName(String name) {
         EntityManager em = getEntityManager();
-        List<Player> players = em.createQuery("SELECT player from Player player where player.playerName = ?1")
+        List<Player> players = em.createNativeQuery("SELECT * FROM players players where players.playerName = ?1 collate utf8mb4_0900_ai_ci", Player.class)
                 .setParameter(1, name)
                 .getResultList();
         return players;
+    }
+
+    public static List<Player> queryForPlayersByNameLast(String name) {
+        if (name.split(" ").length > 1) {
+            EntityManager em = getEntityManager();
+            List<Player> players = em.createNativeQuery("SELECT * FROM players players where players.playerName like ?1 collate utf8mb4_0900_ai_ci", Player.class)
+                    .setParameter(1, '%' + name.split(" ")[1])
+                    .getResultList();
+            return players;
+        }
+        return null;
+    }
+
+    public static List<Player> queryForPlayersByNameFirst(String name) {
+        EntityManager em = getEntityManager();
+        List<Player> players = em.createNativeQuery("SELECT * FROM players players where players.playerName like ?1 collate utf8mb4_0900_ai_ci", Player.class)
+                .setParameter(1, name.split(" ")[0] + '%')
+                .getResultList();
+        return players;
+    }
+
+    public static List<Player> queryForPlayersByNameSwapped(String name) {
+        if (name.split(" ").length > 1) {
+            EntityManager em = getEntityManager();
+            List<Player> players = em.createNativeQuery("SELECT * FROM players players where players.playerName = ?1 collate utf8mb4_0900_ai_ci", Player.class)
+                    .setParameter(1, name.split(" ")[1] + name.split(" ")[0])
+                    .getResultList();
+            return players;
+        }
+        return null;
+    }
+
+    public static List<Player> queryForPlayersByJustLastName(String name) {
+        if (name.split(" ").length > 1) {
+            EntityManager em = getEntityManager();
+            List<Player> players = em.createNativeQuery("SELECT * FROM players players where players.playerName like ?1 collate utf8mb4_0900_ai_ci", Player.class)
+                    .setParameter(1, '%' + name.split(" ")[1] + '%')
+                    .getResultList();
+            return players;
+        }
+        return null;
+    }
+
+    public static List<Player> queryForPlayersByJustFirstName(String name) {
+        EntityManager em = getEntityManager();
+        List<Player> players = em.createNativeQuery("SELECT * FROM players players where players.playerName like ?1 collate utf8mb4_0900_ai_ci", Player.class)
+                .setParameter(1, '%' + name.split(" ")[0] + '%')
+                .getResultList();
+        return players;
+    }
+
+    public static List<Player> findPlayer(String name) {
+        List<Player> playerList = null;
+        try {
+            playerList = queryForPlayersByName(name);
+
+
+            if (playerList.isEmpty()) {
+                playerList = queryForPlayersByNameLast(name);
+                if (playerList.isEmpty()) {
+                    playerList = queryForPlayersByNameFirst(name);
+                    if (playerList.isEmpty()) {
+                        playerList = queryForPlayersByNameSwapped(name);
+                        if (playerList.isEmpty()) {
+                            playerList = queryForPlayersByJustLastName(name);
+                            if (playerList.isEmpty()) {
+                                playerList = queryForPlayersByJustFirstName(name);
+                            }
+                        }
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error with player - " + name);
+        }
+
+
+        if (playerList == null || playerList.isEmpty()) {
+            return null;
+        }
+        return playerList;
     }
 }

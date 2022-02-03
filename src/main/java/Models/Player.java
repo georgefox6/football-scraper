@@ -545,4 +545,8 @@ public class Player {
     public void setWage(int wage) {
         this.wage = wage;
     }
+
+//    public String toString(){
+//        return
+//    }
 }
