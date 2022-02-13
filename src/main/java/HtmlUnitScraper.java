@@ -3,7 +3,6 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -63,6 +62,7 @@ public class HtmlUnitScraper {
             }
 
             em.getTransaction().commit();
+
         }
         return firstPlayerId;
     }
@@ -114,6 +114,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -164,6 +165,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -211,6 +213,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -246,6 +249,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -281,6 +285,38 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
+        }
+    }
+    private static void removeTransferredPlayers(HtmlPage htmlPage, String page) {
+        final HtmlTable table = htmlPage.getFirstByXPath("//*[@id=\"yw1\"]/table");
+
+        for (final HtmlTableRow row : table.getRows().subList(1, table.getRowCount())) {
+            String name = row.getCell(1).asNormalizedText().split("\\r?\\n")[0].trim();
+
+            try {
+
+                List<Player> playerList = findPlayer(name);
+                if (playerList == null || playerList.isEmpty()) {
+                    System.out.println("Player not found in the db - " + name);
+                    continue;
+                }
+
+                String teamName = page.replace("https://www.transfermarkt.co.uk/", "").split("-")[0];
+
+                for (Player player : playerList) {
+                    if(!player.getPlayerTeam().toUpperCase().contains(teamName.toUpperCase())){
+                        System.out.println("---------------------------------PLAYER GETTING REMOVED - " + name + " - " + teamName);
+                        //Remove player
+                        em.getTransaction().begin();
+                        em.remove(player);
+                        em.getTransaction().commit();
+
+                    }
+                }
+            } catch (Exception e){
+
+            }
         }
     }
 
@@ -325,7 +361,7 @@ public class HtmlUnitScraper {
                 marketValue = (int) (Double.parseDouble(marketValueString.substring(1, marketValueString.indexOf('T'))) * 1000);
             }
 
-            name = StringUtils.stripAccents(name);
+//            name = StringUtils.stripAccents(name);
 
             try {
 
@@ -334,8 +370,8 @@ public class HtmlUnitScraper {
                     System.out.println("Player not found in the db - " + name);
                     continue;
                 }
-                for (Player player : playerList) {
 
+                for (Player player : playerList) {
 
                     player.setHeight(height);
                     player.setPreferredFoot(preferredFoot);
@@ -346,6 +382,7 @@ public class HtmlUnitScraper {
                     em.getTransaction().begin();
                     em.merge(player);
                     em.getTransaction().commit();
+
                 }
 
 
@@ -398,6 +435,7 @@ public class HtmlUnitScraper {
                         em.getTransaction().begin();
                         em.merge(player);
                         em.getTransaction().commit();
+
                     }
 
                 } catch (IndexOutOfBoundsException ex) {
@@ -428,6 +466,7 @@ public class HtmlUnitScraper {
                     em.getTransaction().begin();
                     em.merge(player);
                     em.getTransaction().commit();
+
 
                 } catch (IndexOutOfBoundsException ex) {
 //                ex.printStackTrace();
@@ -548,6 +587,7 @@ public class HtmlUnitScraper {
 
             HtmlPage htmlPage = webClient.getPage(page);
             getTransferStats(htmlPage);
+            removeTransferredPlayers(htmlPage, page);
 
             System.out.println("Completed Transfermarkt - " + page);
 
