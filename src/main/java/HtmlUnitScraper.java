@@ -3,10 +3,10 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +63,18 @@ public class HtmlUnitScraper {
             }
 
             em.getTransaction().commit();
+
+//            em = getEntityManager();
+//            em.getTransaction().begin();
+//
+//            em.persist(player);
+//
+//            if (firstPlayerId == 0) {
+//                firstPlayerId = player.getId();
+//            }
+//
+//            em.getTransaction().commit();
+
         }
         return firstPlayerId;
     }
@@ -114,6 +126,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -164,6 +177,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -211,6 +225,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -246,6 +261,7 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
         }
     }
 
@@ -281,6 +297,40 @@ public class HtmlUnitScraper {
             em.getTransaction().begin();
             em.persist(player);
             em.getTransaction().commit();
+
+        }
+    }
+
+    private static void removeTransferredPlayers(HtmlPage htmlPage, String page) {
+        final HtmlTable table = htmlPage.getFirstByXPath("//*[@id=\"yw1\"]/table");
+
+        for (final HtmlTableRow row : table.getRows().subList(1, table.getRowCount())) {
+            String name = row.getCell(1).asNormalizedText().split("\\r?\\n")[0].trim();
+
+            try {
+
+                List<Player> playerList = findPlayer(name);
+                if (playerList == null || playerList.isEmpty()) {
+                    System.out.println("Player not found in the db - " + name);
+                    continue;
+                }
+
+                String teamName = page.replace("https://www.transfermarkt.co.uk/", "").split("-")[0];
+
+                for (Player player : playerList) {
+                    if(!player.getPlayerTeam().toUpperCase().contains(teamName.toUpperCase())){
+//
+                        System.out.println("Removing player " + player.getPlayerName() + " - " + player.getId() + " - " + player.getPlayerTeam());
+
+                        player.setPlayerName(player.getPlayerName() + " - DELETE");
+                        em.getTransaction().begin();
+                        em.merge(player);
+                        em.getTransaction().commit();
+                    }
+                }
+            } catch (Exception e){
+
+            }
         }
     }
 
@@ -325,7 +375,7 @@ public class HtmlUnitScraper {
                 marketValue = (int) (Double.parseDouble(marketValueString.substring(1, marketValueString.indexOf('T'))) * 1000);
             }
 
-            name = StringUtils.stripAccents(name);
+//            name = StringUtils.stripAccents(name);
 
             try {
 
@@ -334,8 +384,8 @@ public class HtmlUnitScraper {
                     System.out.println("Player not found in the db - " + name);
                     continue;
                 }
-                for (Player player : playerList) {
 
+                for (Player player : playerList) {
 
                     player.setHeight(height);
                     player.setPreferredFoot(preferredFoot);
@@ -346,6 +396,7 @@ public class HtmlUnitScraper {
                     em.getTransaction().begin();
                     em.merge(player);
                     em.getTransaction().commit();
+
                 }
 
 
@@ -398,6 +449,7 @@ public class HtmlUnitScraper {
                         em.getTransaction().begin();
                         em.merge(player);
                         em.getTransaction().commit();
+
                     }
 
                 } catch (IndexOutOfBoundsException ex) {
@@ -428,6 +480,7 @@ public class HtmlUnitScraper {
                     em.getTransaction().begin();
                     em.merge(player);
                     em.getTransaction().commit();
+
 
                 } catch (IndexOutOfBoundsException ex) {
 //                ex.printStackTrace();
@@ -562,6 +615,15 @@ public class HtmlUnitScraper {
 
             System.out.println("Completed Salary Sport - " + page);
         }
+
+        for (String page : transfermarktPages) {
+
+            HtmlPage htmlPage = webClient.getPage(page);
+            removeTransferredPlayers(htmlPage, page);
+
+            System.out.println("Completed Transfermarkt - " + page);
+
+        }
     }
 
     public static List<Player> queryForPlayersByName(String name) {
@@ -627,22 +689,22 @@ public class HtmlUnitScraper {
             playerList = queryForPlayersByName(name);
 
 
-            if (playerList.isEmpty()) {
-                playerList = queryForPlayersByNameLast(name);
-                if (playerList.isEmpty()) {
-                    playerList = queryForPlayersByNameFirst(name);
-                    if (playerList.isEmpty()) {
-                        playerList = queryForPlayersByNameSwapped(name);
-                        if (playerList.isEmpty()) {
-                            playerList = queryForPlayersByJustLastName(name);
-                            if (playerList.isEmpty()) {
-                                playerList = queryForPlayersByJustFirstName(name);
-                            }
-                        }
-
-                    }
-                }
-            }
+//            if (playerList.isEmpty()) {
+//                playerList = queryForPlayersByNameLast(name);
+//                if (playerList.isEmpty()) {
+//                    playerList = queryForPlayersByNameFirst(name);
+//                    if (playerList.isEmpty()) {
+//                        playerList = queryForPlayersByNameSwapped(name);
+//                        if (playerList.isEmpty()) {
+//                            playerList = queryForPlayersByJustLastName(name);
+//                            if (playerList.isEmpty()) {
+//                                playerList = queryForPlayersByJustFirstName(name);
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
         } catch (Exception e) {
             System.out.println("Error with player - " + name);
         }

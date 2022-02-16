@@ -18,7 +18,7 @@
 
 <!--            Change to update if you want to create the database yourself-->
             <property name="hibernate.hbm2ddl.auto" value="create"/>
-            <!-- <property name="hibernate.hbm2ddl.auto" value="update"/> -->
+<!--             <property name="hibernate.hbm2ddl.auto" value="update"/>-->
         </properties>
     </persistence-unit>
 
