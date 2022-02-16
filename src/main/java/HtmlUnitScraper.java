@@ -6,6 +6,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,17 @@ public class HtmlUnitScraper {
             }
 
             em.getTransaction().commit();
+
+//            em = getEntityManager();
+//            em.getTransaction().begin();
+//
+//            em.persist(player);
+//
+//            if (firstPlayerId == 0) {
+//                firstPlayerId = player.getId();
+//            }
+//
+//            em.getTransaction().commit();
 
         }
         return firstPlayerId;
@@ -288,6 +300,7 @@ public class HtmlUnitScraper {
 
         }
     }
+
     private static void removeTransferredPlayers(HtmlPage htmlPage, String page) {
         final HtmlTable table = htmlPage.getFirstByXPath("//*[@id=\"yw1\"]/table");
 
@@ -306,12 +319,13 @@ public class HtmlUnitScraper {
 
                 for (Player player : playerList) {
                     if(!player.getPlayerTeam().toUpperCase().contains(teamName.toUpperCase())){
-                        System.out.println("---------------------------------PLAYER GETTING REMOVED - " + name + " - " + teamName);
-                        //Remove player
-                        em.getTransaction().begin();
-                        em.remove(player);
-                        em.getTransaction().commit();
+//
+                        System.out.println("Removing player " + player.getPlayerName() + " - " + player.getId() + " - " + player.getPlayerTeam());
 
+                        player.setPlayerName(player.getPlayerName() + " - DELETE");
+                        em.getTransaction().begin();
+                        em.merge(player);
+                        em.getTransaction().commit();
                     }
                 }
             } catch (Exception e){
@@ -587,7 +601,6 @@ public class HtmlUnitScraper {
 
             HtmlPage htmlPage = webClient.getPage(page);
             getTransferStats(htmlPage);
-            removeTransferredPlayers(htmlPage, page);
 
             System.out.println("Completed Transfermarkt - " + page);
 
@@ -601,6 +614,15 @@ public class HtmlUnitScraper {
             getSalaryStats(htmlPage);
 
             System.out.println("Completed Salary Sport - " + page);
+        }
+
+        for (String page : transfermarktPages) {
+
+            HtmlPage htmlPage = webClient.getPage(page);
+            removeTransferredPlayers(htmlPage, page);
+
+            System.out.println("Completed Transfermarkt - " + page);
+
         }
     }
 
@@ -667,22 +689,22 @@ public class HtmlUnitScraper {
             playerList = queryForPlayersByName(name);
 
 
-            if (playerList.isEmpty()) {
-                playerList = queryForPlayersByNameLast(name);
-                if (playerList.isEmpty()) {
-                    playerList = queryForPlayersByNameFirst(name);
-                    if (playerList.isEmpty()) {
-                        playerList = queryForPlayersByNameSwapped(name);
-                        if (playerList.isEmpty()) {
-                            playerList = queryForPlayersByJustLastName(name);
-                            if (playerList.isEmpty()) {
-                                playerList = queryForPlayersByJustFirstName(name);
-                            }
-                        }
-
-                    }
-                }
-            }
+//            if (playerList.isEmpty()) {
+//                playerList = queryForPlayersByNameLast(name);
+//                if (playerList.isEmpty()) {
+//                    playerList = queryForPlayersByNameFirst(name);
+//                    if (playerList.isEmpty()) {
+//                        playerList = queryForPlayersByNameSwapped(name);
+//                        if (playerList.isEmpty()) {
+//                            playerList = queryForPlayersByJustLastName(name);
+//                            if (playerList.isEmpty()) {
+//                                playerList = queryForPlayersByJustFirstName(name);
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
         } catch (Exception e) {
             System.out.println("Error with player - " + name);
         }
