@@ -546,7 +546,7 @@ public class Player {
         this.wage = wage;
     }
 
-//    public String toString(){
-//        return
-//    }
+    public String toString(){
+        return this.getPlayerName() + " " + this.getPlayerTeam() + " " + this.getId();
+    }
 }
