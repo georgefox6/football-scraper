@@ -15,6 +15,7 @@ public class Player {
     private String playerPosition;
     private String playerAge;
     private String playerTeam;
+    private String imageUrl;
 
     //Playing time
     private int matchesPlayed;
@@ -88,6 +89,14 @@ public class Player {
 
     public Player(){
 
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setId(int id) {

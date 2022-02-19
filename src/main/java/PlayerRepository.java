@@ -52,4 +52,10 @@ public class PlayerRepository {
         }
         return Optional.empty();
     }
+
+    public void remove(Player player){
+        entityManager.getTransaction().begin();
+        entityManager.remove(player);
+        entityManager.getTransaction().commit();
+    }
 }
