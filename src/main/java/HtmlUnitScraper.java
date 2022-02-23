@@ -1,5 +1,5 @@
 import Models.Player;
-import Models.PlayerPercentile;
+import Models.PlayerAttackingPercentile;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
@@ -96,7 +96,7 @@ public class HtmlUnitScraper {
 
     public static void main(String[] args) throws Exception {
         PlayerRepository playerRepository = new PlayerRepository(em);
-        PlayerPercentileRepository playerPercentileRepository = new PlayerPercentileRepository(em);
+        PlayerAttackingPercentileRepository playerPercentileRepository = new PlayerAttackingPercentileRepository(em);
 
         //Create new webclient
         WebClient webClient = new WebClient();
@@ -154,7 +154,7 @@ public class HtmlUnitScraper {
         List<Player> allPlayers = playerRepository.findAll();
         players = playerRepository.findAll();
         players.forEach( pl -> {
-            PlayerPercentile playerPercentile = new PlayerPercentile(pl, allPlayers);
+            PlayerAttackingPercentile playerPercentile = new PlayerAttackingPercentile(pl, allPlayers);
             playerPercentileRepository.save(playerPercentile);
         });
 

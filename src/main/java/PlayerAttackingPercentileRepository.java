@@ -2,26 +2,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
-import Models.PlayerPercentile;
+import Models.PlayerAttackingPercentile;
 
-public class PlayerPercentileRepository {
+public class PlayerAttackingPercentileRepository {
     private final EntityManager entityManager;
-    public PlayerPercentileRepository(EntityManager entityManager) {
+    public PlayerAttackingPercentileRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public Optional<PlayerPercentile> findById(Integer id) {
-        PlayerPercentile playerPercentile = entityManager.find(PlayerPercentile.class, id);
+    public Optional<PlayerAttackingPercentile> findById(Integer id) {
+        PlayerAttackingPercentile playerPercentile = entityManager.find(PlayerAttackingPercentile.class, id);
         return playerPercentile != null ? Optional.of(playerPercentile) : Optional.empty();
     }
 
-    public List<PlayerPercentile> findAll() {
-        return entityManager.createQuery("from PlayerPercentile player_percentile", PlayerPercentile.class).getResultList();
+    public List<PlayerAttackingPercentile> findAll() {
+        return entityManager.createQuery("from PlayerPercentile player_percentile", PlayerAttackingPercentile.class).getResultList();
     }
 
-    public Optional<PlayerPercentile> findByName(String name) {
+    public Optional<PlayerAttackingPercentile> findByName(String name) {
         try{
-            PlayerPercentile playerPercentile = (PlayerPercentile)entityManager.createNativeQuery("SELECT * FROM playerPercentile playerPercentile where playerPercentiles.playerPercentileName = ?1 collate utf8mb4_0900_ai_ci", PlayerPercentile.class)
+            PlayerAttackingPercentile playerPercentile = (PlayerAttackingPercentile)entityManager.createNativeQuery("SELECT * FROM playerPercentile playerPercentile where playerPercentiles.playerPercentileName = ?1 collate utf8mb4_0900_ai_ci", PlayerAttackingPercentile.class)
                     .setParameter(1, name)
                     .getSingleResult();
             return playerPercentile != null ? Optional.of(playerPercentile) : Optional.empty();
@@ -30,7 +30,7 @@ public class PlayerPercentileRepository {
         }                     
     }
 
-    public Optional<PlayerPercentile> save(PlayerPercentile playerPercentile) {
+    public Optional<PlayerAttackingPercentile> save(PlayerAttackingPercentile playerPercentile) {
         if(playerPercentile.getId() == 0){
             try {
                 entityManager.getTransaction().begin();
@@ -53,7 +53,7 @@ public class PlayerPercentileRepository {
         return Optional.empty();
     }
 
-    public void remove(PlayerPercentile playerPercentile){
+    public void remove(PlayerAttackingPercentile playerPercentile){
         entityManager.getTransaction().begin();
         entityManager.remove(playerPercentile);
         entityManager.getTransaction().commit();

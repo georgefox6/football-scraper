@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "player_percentile")
-public class PlayerPercentile {
+@Table(name = "player_attacking_percentile")
+public class PlayerAttackingPercentile {
     @Id
     @GeneratedValue
     @Column(name = "ID")
@@ -43,7 +43,7 @@ public class PlayerPercentile {
     private int penaltyGoalsPer90PerPositionPercentile;
     private int freeKickShotsPer90PerPositionPercentile;
 
-    public PlayerPercentile(Player player, List<Player> playerList){
+    public PlayerAttackingPercentile(Player player, List<Player> playerList){
         this.playerId = player;
 
         long totalPlayers = playerList.size();
@@ -166,7 +166,7 @@ public class PlayerPercentile {
         return (int) Math.floor((playersWithLessGoals / totalPlayers) * 100);
     }
 
-    public PlayerPercentile(Player playerId, int goalsPercentile, int expectedGoalsPercentile, int shotsPercentile, int shotsOnTargetPercentile, int penaltyGoalsPercentile, int freeKickShotsPercentile, int goalsPer90Percentile, int expectedGoalsPer90Percentile, int shotsPer90Percentile, int shotsOnTargetPer90Percentile, int penaltyGoalsPer90Percentile, int freeKickShotsPer90Percentile, int goalsPerPositionPercentile, int expectedGoalsPerPositionPercentile, int shotsPerPositionPercentile, int shotsOnTargetPerPositionPercentile, int penaltyGoalsPerPositionPercentile, int freeKickShotsPerPositionPercentile, int goalsPer90PerPositionPercentile, int expectedGoalsPer90PerPositionPercentile, int shotsPer90PerPositionPercentile, int shotsOnTargetPer90PerPositionPercentile, int penaltyGoalsPer90PerPositionPercentile, int freeKickShotsPer90PerPositionPercentile) {
+    public PlayerAttackingPercentile(Player playerId, int goalsPercentile, int expectedGoalsPercentile, int shotsPercentile, int shotsOnTargetPercentile, int penaltyGoalsPercentile, int freeKickShotsPercentile, int goalsPer90Percentile, int expectedGoalsPer90Percentile, int shotsPer90Percentile, int shotsOnTargetPer90Percentile, int penaltyGoalsPer90Percentile, int freeKickShotsPer90Percentile, int goalsPerPositionPercentile, int expectedGoalsPerPositionPercentile, int shotsPerPositionPercentile, int shotsOnTargetPerPositionPercentile, int penaltyGoalsPerPositionPercentile, int freeKickShotsPerPositionPercentile, int goalsPer90PerPositionPercentile, int expectedGoalsPer90PerPositionPercentile, int shotsPer90PerPositionPercentile, int shotsOnTargetPer90PerPositionPercentile, int penaltyGoalsPer90PerPositionPercentile, int freeKickShotsPer90PerPositionPercentile) {
         this.playerId = playerId;
         this.goalsPercentile = goalsPercentile;
         this.expectedGoalsPercentile = expectedGoalsPercentile;
@@ -194,7 +194,7 @@ public class PlayerPercentile {
         this.freeKickShotsPer90PerPositionPercentile = freeKickShotsPer90PerPositionPercentile;
     }
 
-    public PlayerPercentile() {
+    public PlayerAttackingPercentile() {
     }
 
     public int getId() {
