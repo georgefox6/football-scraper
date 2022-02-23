@@ -1,4 +1,5 @@
 import Models.Player;
+import Models.PlayerPercentile;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
@@ -95,6 +96,7 @@ public class HtmlUnitScraper {
 
     public static void main(String[] args) throws Exception {
         PlayerRepository playerRepository = new PlayerRepository(em);
+        PlayerPercentileRepository playerPercentileRepository = new PlayerPercentileRepository(em);
 
         //Create new webclient
         WebClient webClient = new WebClient();
@@ -102,10 +104,19 @@ public class HtmlUnitScraper {
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setJavaScriptEnabled(false);
 
+//        Player player = new Player();
+//        playerRepository.save(player);
+//
+//        PlayerPercentile pp = new PlayerPercentile(player,2,3,4,5,6,7,8,9,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5);
+//        playerPercentileRepository.save(pp);
+
+
         for (String page : getTransfermarktLinks()) {
             HtmlPage htmlPage = webClient.getPage(page);
             getTransferStatsNew(htmlPage, playerRepository);
         }
+
+
 
         System.out.println("Transfermarkt done");
 
@@ -115,6 +126,7 @@ public class HtmlUnitScraper {
         }
 
         System.out.println("Salary done");
+
 
         for (String teamUrl : getFBRefLinks()) {
             HtmlPage htmlPage = webClient.getPage(teamUrl);
@@ -126,15 +138,26 @@ public class HtmlUnitScraper {
             getMiscStatsNew(htmlPage, playerRepository);
         }
 
+
+
         System.out.println("FBREF done");
 
         //Remove all players who have no nation (Means they haven't been registered in the squad)
         List<Player> players = playerRepository.findAll();
-        players.forEach( p -> {
-            if (p.getPlayerNation() == null) {
-                playerRepository.remove(p);
+        players.forEach( pl -> {
+            if (pl.getPlayerNation() == null) {
+                playerRepository.remove(pl);
             }
         });
+
+        //Calculate all the percentiles for each player
+        List<Player> allPlayers = playerRepository.findAll();
+        players = playerRepository.findAll();
+        players.forEach( pl -> {
+            PlayerPercentile playerPercentile = new PlayerPercentile(pl, allPlayers);
+            playerPercentileRepository.save(playerPercentile);
+        });
+
     }
 
 

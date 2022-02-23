@@ -3,7 +3,7 @@ package Models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PLAYERS")
+@Table(name = "players")
 public class Player {
     @Id
     @GeneratedValue
