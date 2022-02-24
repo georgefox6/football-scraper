@@ -1,6 +1,7 @@
 import Models.Player;
 import Models.PlayerAttackingPercentile;
 
+import Models.PlayerDefendingPercentile;
 import Models.PlayerPossessionPercentile;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
@@ -99,6 +100,7 @@ public class HtmlUnitScraper {
         PlayerRepository playerRepository = new PlayerRepository(em);
         PlayerAttackingPercentileRepository playerAttackingPercentileRepository = new PlayerAttackingPercentileRepository(em);
         PlayerPossessionPercentileRepository playerPossessionPercentileRepository = new PlayerPossessionPercentileRepository(em);
+        PlayerDefendingPercentileRepository playerDefendingPercentileRepository = new PlayerDefendingPercentileRepository(em);
 
         //Create new webclient
         WebClient webClient = new WebClient();
@@ -161,6 +163,9 @@ public class HtmlUnitScraper {
 
             PlayerPossessionPercentile playerPossessionPercentile = new PlayerPossessionPercentile(pl, allPlayers);
             playerPossessionPercentileRepository.save(playerPossessionPercentile);
+
+            PlayerDefendingPercentile playerDefendingPercentile = new PlayerDefendingPercentile(pl, allPlayers);
+            playerDefendingPercentileRepository.save(playerDefendingPercentile);
 
         });
 

@@ -63,17 +63,17 @@ public class PlayerPossessionPercentile {
 
 
         //PassesCompleted
-        long playersWithLessPassesCompleted = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getTotalPassesCompleted() <= player.getTotalPassesCompleted()).count();
+        long playersWithLessPassesCompleted = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getTotalPassesCompleted() < player.getTotalPassesCompleted()).count();
         this.passesCompletedPercentile = calculatePercentile((double) playersWithLessPassesCompleted, (double) totalPlayers);
 
-        long playersWithLessPassesCompletedPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getTotalPassesCompleted() <= player.getTotalPassesCompleted() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessPassesCompletedPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getTotalPassesCompleted() < player.getTotalPassesCompleted() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.passesCompletedPerPositionPercentile = calculatePercentile((double) playersWithLessPassesCompletedPerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessPassesCompletedPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getTotalPassesCompleted()/(double)pl.getMinutesPlayed()) <= ((double)player.getTotalPassesCompleted()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessPassesCompletedPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getTotalPassesCompleted()/(double)pl.getMinutesPlayed()) < ((double)player.getTotalPassesCompleted()/(double)player.getMinutesPlayed())).count();
             this.passesCompletedPer90Percentile = calculatePercentile((double) playersWithLessPassesCompletedPer90, (double) totalPlayers);
 
-            long playersWithLessPassesCompletedPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getTotalPassesCompleted()/(double)pl.getMinutesPlayed()) <= ((double)player.getTotalPassesCompleted()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessPassesCompletedPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getTotalPassesCompleted()/(double)pl.getMinutesPlayed()) < ((double)player.getTotalPassesCompleted()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.passesCompletedPer90PerPositionPercentile = calculatePercentile((double) playersWithLessPassesCompletedPer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.passesCompletedPer90Percentile = 0;
@@ -82,17 +82,17 @@ public class PlayerPossessionPercentile {
 
 
         //ProgressivePassingDistance
-        long playersWithLessProgressivePassingDistance = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getProgressivePassingDistance() <= player.getProgressivePassingDistance()).count();
+        long playersWithLessProgressivePassingDistance = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getProgressivePassingDistance() < player.getProgressivePassingDistance()).count();
         this.progressivePassingDistancePercentile = calculatePercentile((double) playersWithLessProgressivePassingDistance, (double) totalPlayers);
 
-        long playersWithLessProgressivePassingDistancePerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getProgressivePassingDistance() <= player.getProgressivePassingDistance() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessProgressivePassingDistancePerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getProgressivePassingDistance() < player.getProgressivePassingDistance() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.progressivePassingDistancePerPositionPercentile = calculatePercentile((double) playersWithLessProgressivePassingDistancePerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessProgressivePassingDistancePer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getProgressivePassingDistance()/(double)pl.getMinutesPlayed()) <= ((double)player.getProgressivePassingDistance()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessProgressivePassingDistancePer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getProgressivePassingDistance()/(double)pl.getMinutesPlayed()) < ((double)player.getProgressivePassingDistance()/(double)player.getMinutesPlayed())).count();
             this.progressivePassingDistancePer90Percentile = calculatePercentile((double) playersWithLessProgressivePassingDistancePer90, (double) totalPlayers);
 
-            long playersWithLessProgressivePassingDistancePer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getProgressivePassingDistance()/(double)pl.getMinutesPlayed()) <= ((double)player.getProgressivePassingDistance()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessProgressivePassingDistancePer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getProgressivePassingDistance()/(double)pl.getMinutesPlayed()) < ((double)player.getProgressivePassingDistance()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.progressivePassingDistancePer90PerPositionPercentile = calculatePercentile((double) playersWithLessProgressivePassingDistancePer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.progressivePassingDistancePer90Percentile = 0;
@@ -101,17 +101,17 @@ public class PlayerPossessionPercentile {
 
 
         //Crosses
-        long playersWithLessCrosses = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getCrosses() <= player.getCrosses()).count();
+        long playersWithLessCrosses = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getCrosses() < player.getCrosses()).count();
         this.crossesPercentile = calculatePercentile((double) playersWithLessCrosses, (double) totalPlayers);
 
-        long playersWithLessCrossesPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getCrosses() <= player.getCrosses() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessCrossesPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getCrosses() < player.getCrosses() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.crossesPerPositionPercentile = calculatePercentile((double) playersWithLessCrossesPerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessCrossesPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getCrosses()/(double)pl.getMinutesPlayed()) <= ((double)player.getCrosses()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessCrossesPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getCrosses()/(double)pl.getMinutesPlayed()) < ((double)player.getCrosses()/(double)player.getMinutesPlayed())).count();
             this.crossesPer90Percentile = calculatePercentile((double) playersWithLessCrossesPer90, (double) totalPlayers);
 
-            long playersWithLessCrossesPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getCrosses()/(double)pl.getMinutesPlayed()) <= ((double)player.getCrosses()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessCrossesPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getCrosses()/(double)pl.getMinutesPlayed()) < ((double)player.getCrosses()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.crossesPer90PerPositionPercentile = calculatePercentile((double) playersWithLessCrossesPer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.crossesPer90Percentile = 0;
@@ -120,17 +120,17 @@ public class PlayerPossessionPercentile {
 
 
         //Dribbles
-        long playersWithLessDribbles = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesCompleted() <= player.getDribblesCompleted()).count();
+        long playersWithLessDribbles = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesCompleted() < player.getDribblesCompleted()).count();
         this.dribblesPercentile = calculatePercentile((double) playersWithLessDribbles, (double) totalPlayers);
 
-        long playersWithLessDribblesPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesCompleted() <= player.getDribblesCompleted() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessDribblesPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesCompleted() < player.getDribblesCompleted() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.dribblesPerPositionPercentile = calculatePercentile((double) playersWithLessDribblesPerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessDribblesPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesCompleted()/(double)pl.getMinutesPlayed()) <= ((double)player.getDribblesCompleted()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessDribblesPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesCompleted()/(double)pl.getMinutesPlayed()) < ((double)player.getDribblesCompleted()/(double)player.getMinutesPlayed())).count();
             this.dribblesPer90Percentile = calculatePercentile((double) playersWithLessDribblesPer90, (double) totalPlayers);
 
-            long playersWithLessDribblesPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesCompleted()/(double)pl.getMinutesPlayed()) <= ((double)player.getDribblesCompleted()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessDribblesPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesCompleted()/(double)pl.getMinutesPlayed()) < ((double)player.getDribblesCompleted()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.dribblesPer90PerPositionPercentile = calculatePercentile((double) playersWithLessDribblesPer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.dribblesPer90Percentile = 0;
@@ -139,17 +139,17 @@ public class PlayerPossessionPercentile {
 
 
         //ProgressiveDribbleDistance
-        long playersWithLessProgressiveDribbleDistance = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesProgressiveDistance() <= player.getDribblesProgressiveDistance()).count();
+        long playersWithLessProgressiveDribbleDistance = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesProgressiveDistance() < player.getDribblesProgressiveDistance()).count();
         this.progressiveDribbleDistancePercentile = calculatePercentile((double) playersWithLessProgressiveDribbleDistance, (double) totalPlayers);
 
-        long playersWithLessProgressiveDribbleDistancePerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesProgressiveDistance() <= player.getDribblesProgressiveDistance() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessProgressiveDribbleDistancePerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getDribblesProgressiveDistance() < player.getDribblesProgressiveDistance() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.progressiveDribbleDistancePerPositionPercentile = calculatePercentile((double) playersWithLessProgressiveDribbleDistancePerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessProgressiveDribbleDistancePer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesProgressiveDistance()/(double)pl.getMinutesPlayed()) <= ((double)player.getDribblesProgressiveDistance()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessProgressiveDribbleDistancePer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesProgressiveDistance()/(double)pl.getMinutesPlayed()) < ((double)player.getDribblesProgressiveDistance()/(double)player.getMinutesPlayed())).count();
             this.progressiveDribbleDistancePer90Percentile = calculatePercentile((double) playersWithLessProgressiveDribbleDistancePer90, (double) totalPlayers);
 
-            long playersWithLessProgressiveDribbleDistancePer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesProgressiveDistance()/(double)pl.getMinutesPlayed()) <= ((double)player.getDribblesProgressiveDistance()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessProgressiveDribbleDistancePer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getDribblesProgressiveDistance()/(double)pl.getMinutesPlayed()) < ((double)player.getDribblesProgressiveDistance()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.progressiveDribbleDistancePer90PerPositionPercentile = calculatePercentile((double) playersWithLessProgressiveDribbleDistancePer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.progressiveDribbleDistancePer90Percentile = 0;
@@ -158,17 +158,17 @@ public class PlayerPossessionPercentile {
 
 
         //PassesControlled
-        long playersWithLessPassesControlled = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getPassesControlled() <= player.getPassesControlled()).count();
+        long playersWithLessPassesControlled = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getPassesControlled() < player.getPassesControlled()).count();
         this.passesControlledPercentile = calculatePercentile((double) playersWithLessPassesControlled, (double) totalPlayers);
 
-        long playersWithLessPassesControlledPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getPassesControlled() <= player.getPassesControlled() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessPassesControlledPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getPassesControlled() < player.getPassesControlled() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.passesControlledPerPositionPercentile = calculatePercentile((double) playersWithLessPassesControlledPerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessPassesControlledPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getPassesControlled()/(double)pl.getMinutesPlayed()) <= ((double)player.getPassesControlled()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessPassesControlledPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getPassesControlled()/(double)pl.getMinutesPlayed()) < ((double)player.getPassesControlled()/(double)player.getMinutesPlayed())).count();
             this.passesControlledPer90Percentile = calculatePercentile((double) playersWithLessPassesControlledPer90, (double) totalPlayers);
 
-            long playersWithLessPassesControlledPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getPassesControlled()/(double)pl.getMinutesPlayed()) <= ((double)player.getPassesControlled()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessPassesControlledPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getPassesControlled()/(double)pl.getMinutesPlayed()) < ((double)player.getPassesControlled()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.passesControlledPer90PerPositionPercentile = calculatePercentile((double) playersWithLessPassesControlledPer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.passesControlledPer90Percentile = 0;
@@ -177,17 +177,17 @@ public class PlayerPossessionPercentile {
 
 
         //Assists
-        long playersWithLessAssists = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getAssists() <= player.getAssists()).count();
+        long playersWithLessAssists = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getAssists() < player.getAssists()).count();
         this.assistsPercentile = calculatePercentile((double) playersWithLessAssists, (double) totalPlayers);
 
-        long playersWithLessAssistsPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getAssists() <= player.getAssists() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessAssistsPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getAssists() < player.getAssists() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.assistsPerPositionPercentile = calculatePercentile((double) playersWithLessAssistsPerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessAssistsPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getAssists()/(double)pl.getMinutesPlayed()) <= ((double)player.getAssists()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessAssistsPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getAssists()/(double)pl.getMinutesPlayed()) < ((double)player.getAssists()/(double)player.getMinutesPlayed())).count();
             this.assistsPer90Percentile = calculatePercentile((double) playersWithLessAssistsPer90, (double) totalPlayers);
 
-            long playersWithLessAssistsPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getAssists()/(double)pl.getMinutesPlayed()) <= ((double)player.getAssists()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessAssistsPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getAssists()/(double)pl.getMinutesPlayed()) < ((double)player.getAssists()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.assistsPer90PerPositionPercentile = calculatePercentile((double) playersWithLessAssistsPer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.assistsPer90Percentile = 0;
@@ -196,17 +196,17 @@ public class PlayerPossessionPercentile {
 
 
         //ExpectedAssists
-        long playersWithLessExpectedAssists = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getExpectedAssists() <= player.getExpectedAssists()).count();
+        long playersWithLessExpectedAssists = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getExpectedAssists() < player.getExpectedAssists()).count();
         this.expectedAssistsPercentile = calculatePercentile((double) playersWithLessExpectedAssists, (double) totalPlayers);
 
-        long playersWithLessExpectedAssistsPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getExpectedAssists() <= player.getExpectedAssists() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+        long playersWithLessExpectedAssistsPerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && pl.getExpectedAssists() < player.getExpectedAssists() && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
         this.expectedAssistsPerPositionPercentile = calculatePercentile((double) playersWithLessExpectedAssistsPerPosition, (double) totalPlayersPerPosition);
 
         if(player.getMinutesPlayed() > 0){
-            long playersWithLessExpectedAssistsPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getExpectedAssists()/(double)pl.getMinutesPlayed()) <= ((double)player.getExpectedAssists()/(double)player.getMinutesPlayed())).count();
+            long playersWithLessExpectedAssistsPer90 = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getExpectedAssists()/(double)pl.getMinutesPlayed()) < ((double)player.getExpectedAssists()/(double)player.getMinutesPlayed())).count();
             this.expectedAssistsPer90Percentile = calculatePercentile((double) playersWithLessExpectedAssistsPer90, (double) totalPlayers);
 
-            long playersWithLessExpectedAssistsPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getExpectedAssists()/(double)pl.getMinutesPlayed()) <= ((double)player.getExpectedAssists()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
+            long playersWithLessExpectedAssistsPer90PerPosition = playerList.stream().filter( pl -> pl.getMinutesPlayed() > 0 && ((double)pl.getExpectedAssists()/(double)pl.getMinutesPlayed()) < ((double)player.getExpectedAssists()/(double)player.getMinutesPlayed()) && pl.getPlayerPosition().equals(player.getPlayerPosition())).count();
             this.expectedAssistsPer90PerPositionPercentile = calculatePercentile((double) playersWithLessExpectedAssistsPer90PerPosition, (double) totalPlayersPerPosition);
         } else {
             this.expectedAssistsPer90Percentile = 0;
