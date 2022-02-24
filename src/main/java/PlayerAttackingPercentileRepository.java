@@ -11,41 +11,30 @@ public class PlayerAttackingPercentileRepository {
     }
 
     public Optional<PlayerAttackingPercentile> findById(Integer id) {
-        PlayerAttackingPercentile playerPercentile = entityManager.find(PlayerAttackingPercentile.class, id);
-        return playerPercentile != null ? Optional.of(playerPercentile) : Optional.empty();
+        PlayerAttackingPercentile playerAttackingPercentile = entityManager.find(PlayerAttackingPercentile.class, id);
+        return playerAttackingPercentile != null ? Optional.of(playerAttackingPercentile) : Optional.empty();
     }
 
     public List<PlayerAttackingPercentile> findAll() {
-        return entityManager.createQuery("from PlayerPercentile player_percentile", PlayerAttackingPercentile.class).getResultList();
+        return entityManager.createQuery("from playerAttackingPercentile player_attacking_percentile", PlayerAttackingPercentile.class).getResultList();
     }
 
-    public Optional<PlayerAttackingPercentile> findByName(String name) {
-        try{
-            PlayerAttackingPercentile playerPercentile = (PlayerAttackingPercentile)entityManager.createNativeQuery("SELECT * FROM playerPercentile playerPercentile where playerPercentiles.playerPercentileName = ?1 collate utf8mb4_0900_ai_ci", PlayerAttackingPercentile.class)
-                    .setParameter(1, name)
-                    .getSingleResult();
-            return playerPercentile != null ? Optional.of(playerPercentile) : Optional.empty();
-        } catch (NoResultException e){
-            return Optional.empty();
-        }                     
-    }
-
-    public Optional<PlayerAttackingPercentile> save(PlayerAttackingPercentile playerPercentile) {
-        if(playerPercentile.getId() == 0){
+    public Optional<PlayerAttackingPercentile> save(PlayerAttackingPercentile playerAttackingPercentile) {
+        if(playerAttackingPercentile.getId() == 0){
             try {
                 entityManager.getTransaction().begin();
-                entityManager.persist(playerPercentile);
+                entityManager.persist(playerAttackingPercentile);
                 entityManager.getTransaction().commit();
-                return Optional.of(playerPercentile);
+                return Optional.of(playerAttackingPercentile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 entityManager.getTransaction().begin();
-                entityManager.merge(playerPercentile);
+                entityManager.merge(playerAttackingPercentile);
                 entityManager.getTransaction().commit();
-                return Optional.of(playerPercentile);
+                return Optional.of(playerAttackingPercentile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -53,9 +42,9 @@ public class PlayerAttackingPercentileRepository {
         return Optional.empty();
     }
 
-    public void remove(PlayerAttackingPercentile playerPercentile){
+    public void remove(PlayerAttackingPercentile playerAttackingPercentile){
         entityManager.getTransaction().begin();
-        entityManager.remove(playerPercentile);
+        entityManager.remove(playerAttackingPercentile);
         entityManager.getTransaction().commit();
     }
 }

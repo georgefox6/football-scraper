@@ -1,6 +1,7 @@
 import Models.Player;
 import Models.PlayerAttackingPercentile;
 
+import Models.PlayerPossessionPercentile;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
@@ -96,7 +97,8 @@ public class HtmlUnitScraper {
 
     public static void main(String[] args) throws Exception {
         PlayerRepository playerRepository = new PlayerRepository(em);
-        PlayerAttackingPercentileRepository playerPercentileRepository = new PlayerAttackingPercentileRepository(em);
+        PlayerAttackingPercentileRepository playerAttackingPercentileRepository = new PlayerAttackingPercentileRepository(em);
+        PlayerPossessionPercentileRepository playerPossessionPercentileRepository = new PlayerPossessionPercentileRepository(em);
 
         //Create new webclient
         WebClient webClient = new WebClient();
@@ -108,7 +110,7 @@ public class HtmlUnitScraper {
 //        playerRepository.save(player);
 //
 //        PlayerPercentile pp = new PlayerPercentile(player,2,3,4,5,6,7,8,9,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5);
-//        playerPercentileRepository.save(pp);
+//        playerAttackingPercentileRepository.save(pp);
 
 
         for (String page : getTransfermarktLinks()) {
@@ -154,8 +156,12 @@ public class HtmlUnitScraper {
         List<Player> allPlayers = playerRepository.findAll();
         players = playerRepository.findAll();
         players.forEach( pl -> {
-            PlayerAttackingPercentile playerPercentile = new PlayerAttackingPercentile(pl, allPlayers);
-            playerPercentileRepository.save(playerPercentile);
+            PlayerAttackingPercentile playerAttackingPercentile = new PlayerAttackingPercentile(pl, allPlayers);
+            playerAttackingPercentileRepository.save(playerAttackingPercentile);
+
+            PlayerPossessionPercentile playerPossessionPercentile = new PlayerPossessionPercentile(pl, allPlayers);
+            playerPossessionPercentileRepository.save(playerPossessionPercentile);
+
         });
 
     }
