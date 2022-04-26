@@ -1,8 +1,5 @@
-import Models.Player;
-import Models.PlayerAttackingPercentile;
+import Models.*;
 
-import Models.PlayerDefendingPercentile;
-import Models.PlayerPossessionPercentile;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
@@ -18,7 +15,7 @@ public class HtmlUnitScraper {
     final static EntityManagerFactory emf = Persistence.createEntityManagerFactory("footballscraper");
     final static EntityManager em = emf.createEntityManager();
 
-    public static List<String> getFBRefLinks() {
+    public static List<String> getPremierLeagueFBRefLinks() {
         List<String> premierLeagueUrlFBRef = new ArrayList<>();
         premierLeagueUrlFBRef.add("https://fbref.com/en/squads/cff3d9bb/Chelsea-Stats");
         premierLeagueUrlFBRef.add("https://fbref.com/en/squads/b8fd03ef/Manchester-City-Stats");
@@ -44,7 +41,7 @@ public class HtmlUnitScraper {
         return premierLeagueUrlFBRef;
     }
 
-    public static List<String> getTransfermarktLinks() {
+    public static List<String> getPremierLeagueTransfermarktLinks() {
         List<String> transfermarktLinks = new ArrayList<>();
         transfermarktLinks.add("https://www.transfermarkt.co.uk/manchester-city/kader/verein/281/saison_id/2021/plus/1");
         transfermarktLinks.add("https://www.transfermarkt.co.uk/manchester-united/kader/verein/985/saison_id/2021/plus/1");
@@ -70,7 +67,7 @@ public class HtmlUnitScraper {
         return transfermarktLinks;
     }
 
-    private static List<String> getSalarySportLinks() {
+    private static List<String> getPremierLeagueSalarySportLinks() {
         List<String> salarySportLinks = new ArrayList<>();
         salarySportLinks.add("https://salarysport.com/football/sky-bet-championship/norwich-city/");
         salarySportLinks.add("https://salarysport.com/football/premier-league/crystal-palace/");
@@ -96,11 +93,99 @@ public class HtmlUnitScraper {
         return salarySportLinks;
     }
 
+    public static List<String> getBundesligaFBRefLinks(){
+        List<String> bundesligaUrlFBRef = new ArrayList<>();
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/054efa67/Bayern-Munich-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/add600ae/Dortmund-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/c7a9f859/Bayer-Leverkusen-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/acbb6a5b/RB-Leipzig-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/a486e511/Freiburg-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/7a41008f/Union-Berlin-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/bc357bf7/Koln-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/033ea6b8/Hoffenheim-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/f0ac8ee6/Eintracht-Frankfurt-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/a224b06a/Mainz-05-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/32f3ee20/Monchengladbach-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/4eaa11d7/Wolfsburg-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/b42c6323/Bochum-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/0cdc4311/Augsburg-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/2818f8bc/Hertha-BSC-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/598bc722/Stuttgart-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/247c4b67/Arminia-Stats");
+        bundesligaUrlFBRef.add("https://fbref.com/en/squads/12192a4c/Greuther-Furth-Stats");
+        return bundesligaUrlFBRef;
+    }
+
+    public static List<String> getBundesligaTransfermarktLinks() {
+        List<String> bundesligaTransfermarktLinks = new ArrayList<>();
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/bayern-munich/kader/verein/27/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/rb-leipzig/kader/verein/23826/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/borussia-dortmund/kader/verein/16/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/vfl-wolfsburg/kader/verein/82/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/eintracht-frankfurt/kader/verein/24/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/bayer-04-leverkusen/kader/verein/15/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/1-fc-union-berlin/kader/verein/89/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/borussia-monchengladbach/kader/verein/18/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/vfb-stuttgart/kader/verein/79/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/sc-freiburg/kader/verein/60/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/tsg-1899-hoffenheim/kader/verein/533/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/1-fsv-mainz-05/kader/verein/39/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/fc-augsburg/kader/verein/167/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/hertha-bsc/kader/verein/44/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/arminia-bielefeld/kader/verein/10/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/1-fc-koln/kader/verein/3/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/vfl-bochum/kader/verein/80/saison_id/2021/plus/1");
+        bundesligaTransfermarktLinks.add("https://www.transfermarkt.co.uk/spvgg-greuther-furth/kader/verein/65/saison_id/2021/plus/1");
+        return bundesligaTransfermarktLinks;
+    }
+
+    private static List<String> getBundesligaSalarySportLinks() {
+        List<String> salarySportLinks = new ArrayList<>();
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/borussia-dortmund/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/rb-leipzig/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/1.-fc-k%C3%B6ln/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/1.-fc-union-berlin/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/1.-fsv-mainz-05/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/bayer-04-leverkusen/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/borussia-m%C3%B6nchengladbach/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/dsc-arminia-bielefeld/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/fc-augsburg/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/fc-bayern-m%C3%BCnchen/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/hertha-berlin/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/sport-club-freiburg/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/tsg-hoffenheim/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/vfb-stuttgart/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga/vfl-wolfsburg/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga-2/eintracht-braunschweig/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga-2/vfl-bochum-1848/");
+        salarySportLinks.add("https://salarysport.com/football/bundesliga-2/spvgg-greuther-f%C3%BCrth/");
+        return salarySportLinks;
+    }
+
+    private static List<String> getSalarySportLinks() {
+        List<String> salarySportLinks = getPremierLeagueSalarySportLinks();
+        salarySportLinks.addAll(getBundesligaSalarySportLinks());
+        return salarySportLinks;
+    }
+
+    public static List<String> getTransfermarktLinks() {
+        List<String> transfermarktLinks = getPremierLeagueTransfermarktLinks();
+        transfermarktLinks.addAll(getBundesligaTransfermarktLinks());
+        return transfermarktLinks;
+    }
+
+    public static List<String> getFBRefLinks(){
+        List<String> urlFBRef = getPremierLeagueFBRefLinks();
+        urlFBRef.addAll(getBundesligaFBRefLinks());
+        return urlFBRef;
+    }
+
     public static void main(String[] args) throws Exception {
         PlayerRepository playerRepository = new PlayerRepository(em);
         PlayerAttackingPercentileRepository playerAttackingPercentileRepository = new PlayerAttackingPercentileRepository(em);
         PlayerPossessionPercentileRepository playerPossessionPercentileRepository = new PlayerPossessionPercentileRepository(em);
         PlayerDefendingPercentileRepository playerDefendingPercentileRepository = new PlayerDefendingPercentileRepository(em);
+        PlayerTraitsRepository playerTraitsRepository = new PlayerTraitsRepository(em);
 
         //Create new webclient
         WebClient webClient = new WebClient();
@@ -108,21 +193,13 @@ public class HtmlUnitScraper {
         webClient.getOptions().setCssEnabled(false);
         webClient.getOptions().setJavaScriptEnabled(false);
 
-//        Player player = new Player();
-//        playerRepository.save(player);
-//
-//        PlayerPercentile pp = new PlayerPercentile(player,2,3,4,5,6,7,8,9,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5);
-//        playerAttackingPercentileRepository.save(pp);
-
-
         for (String page : getTransfermarktLinks()) {
             HtmlPage htmlPage = webClient.getPage(page);
             getTransferStatsNew(htmlPage, playerRepository);
         }
 
-
-
         System.out.println("Transfermarkt done");
+        System.out.println(java.time.LocalDateTime.now());
 
         for (String page : getSalarySportLinks()) {
             HtmlPage htmlPage = webClient.getPage(page);
@@ -130,7 +207,7 @@ public class HtmlUnitScraper {
         }
 
         System.out.println("Salary done");
-
+        System.out.println(java.time.LocalDateTime.now());
 
         for (String teamUrl : getFBRefLinks()) {
             HtmlPage htmlPage = webClient.getPage(teamUrl);
@@ -142,9 +219,8 @@ public class HtmlUnitScraper {
             getMiscStatsNew(htmlPage, playerRepository);
         }
 
-
-
         System.out.println("FBREF done");
+        System.out.println(java.time.LocalDateTime.now());
 
         //Remove all players who have no nation (Means they haven't been registered in the squad)
         List<Player> players = playerRepository.findAll();
@@ -154,7 +230,7 @@ public class HtmlUnitScraper {
             }
         });
 
-        //Calculate all the percentiles for each player
+//        Calculate all the percentiles for each player
         List<Player> allPlayers = playerRepository.findAll();
         players = playerRepository.findAll();
         players.forEach( pl -> {
@@ -166,9 +242,19 @@ public class HtmlUnitScraper {
 
             PlayerDefendingPercentile playerDefendingPercentile = new PlayerDefendingPercentile(pl, allPlayers);
             playerDefendingPercentileRepository.save(playerDefendingPercentile);
-
         });
 
+        System.out.println("Percentiles done");
+        System.out.println(java.time.LocalDateTime.now());
+
+        //Calculate player traits
+        players.forEach( pl -> {
+            PlayerTraits playerTraits = new PlayerTraits(pl);
+            playerTraitsRepository.save(playerTraits);
+        });
+
+        System.out.println("Player traits done");
+        System.out.println(java.time.LocalDateTime.now());
     }
 
 
@@ -232,7 +318,9 @@ public class HtmlUnitScraper {
 
         final List<HtmlTable> tables = new ArrayList<>();
         tables.add(htmlPage.getFirstByXPath("//*[@id=\"gatsby-focus-wrapper\"]/div[2]/main/div[1]/div/div[2]/div[3]/table"));
-        tables.add(htmlPage.getFirstByXPath("//*[@id=\"gatsby-focus-wrapper\"]/div[2]/main/div[1]/div/div[2]/div[5]/table"));
+        if(htmlPage.getFirstByXPath("//*[@id=\"gatsby-focus-wrapper\"]/div[2]/main/div[1]/div/div[2]/div[5]/table") != null){
+            tables.add(htmlPage.getFirstByXPath("//*[@id=\"gatsby-focus-wrapper\"]/div[2]/main/div[1]/div/div[2]/div[5]/table"));
+        }
 
         for(HtmlTable table : tables){
             for (final HtmlTableRow row : table.getRows().subList(1, table.getRowCount())) {
@@ -300,24 +388,30 @@ public class HtmlUnitScraper {
 
     public static void getStandardStatsNew(HtmlPage htmlPage, PlayerRepository playerRepository) {
 
-        String teamName = htmlPage.getTitleText().replace(" Stats, Premier League | FBref.com", "").replace("2021-2022 ", "");
+        String teamName = null;
+        HtmlTable table = null;
 
-        final HtmlTable table = htmlPage.getHtmlElementById("stats_standard_11160");
+        if(htmlPage.getTitleText().contains("Premier League")){
+            teamName = htmlPage.getTitleText().replace(" Stats, Premier League | FBref.com", "").replace("2021-2022 ", "");
+            table = htmlPage.getHtmlElementById("stats_standard_11160");
+        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+            teamName = htmlPage.getTitleText().replace(" Stats, Bundesliga | FBref.com", "").replace("2021-2022 ", "");
+            table = htmlPage.getHtmlElementById("stats_standard_11193");
+        }
+
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
             String playerName = getNameExceptionsFBREF(row.getCell(0).asNormalizedText());
             String playerNation = calculateNation(row.getCell(1).asNormalizedText());
-            //TODO change the value of position to something more useful
-//            String playerPosition = row.getCell(2).asNormalizedText();
             //TODO change the value of age to something easier to understand
             String playerAge = row.getCell(3).asNormalizedText();
 
             Optional<Player> player = playerRepository.findByName(playerName);
-            player.ifPresent( p -> {
+            String finalTeamName = teamName;
+            player.ifPresent(p -> {
                 p.setPlayerNation(playerNation);
-//                p.setPlayerPosition(playerPosition);
                 p.setPlayerAge(playerAge);
-                p.setPlayerTeam(teamName);
+                p.setPlayerTeam(finalTeamName);
                 try {
                     p.setMatchesPlayed(Integer.parseInt(row.getCell(4).asNormalizedText()));
                     p.setMatchesStarted(Integer.parseInt(row.getCell(5).asNormalizedText()));
@@ -343,7 +437,13 @@ public class HtmlUnitScraper {
 
     public static void getShootingStatsNew(HtmlPage htmlPage, PlayerRepository playerRepository) {
 
-        final HtmlTable table = htmlPage.getHtmlElementById("stats_shooting_11160");
+        HtmlTable table = null;
+
+        if(htmlPage.getTitleText().contains("Premier League")){
+            table = htmlPage.getHtmlElementById("stats_shooting_11160");
+        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+            table = htmlPage.getHtmlElementById("stats_shooting_11193");
+        }
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
@@ -389,7 +489,13 @@ public class HtmlUnitScraper {
 
     public static void getPassingStatsNew(HtmlPage htmlPage, PlayerRepository playerRepository) {
 
-        final HtmlTable table = htmlPage.getHtmlElementById("stats_passing_11160");
+        HtmlTable table = null;
+
+        if(htmlPage.getTitleText().contains("Premier League")){
+            table = htmlPage.getHtmlElementById("stats_passing_11160");
+        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+            table = htmlPage.getHtmlElementById("stats_passing_11193");
+        }
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
@@ -426,7 +532,13 @@ public class HtmlUnitScraper {
 
     public static void getDefenseStatsNew(HtmlPage htmlPage, PlayerRepository playerRepository) {
 
-        final HtmlTable table = htmlPage.getHtmlElementById("stats_defense_11160");
+        HtmlTable table = null;
+
+        if(htmlPage.getTitleText().contains("Premier League")){
+            table = htmlPage.getHtmlElementById("stats_defense_11160");
+        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+            table = htmlPage.getHtmlElementById("stats_defense_11193");
+        }
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
@@ -469,7 +581,13 @@ public class HtmlUnitScraper {
 
     public static void getPossessionStatsNew(HtmlPage htmlPage, PlayerRepository playerRepository) {
 
-        final HtmlTable table = htmlPage.getHtmlElementById("stats_possession_11160");
+        HtmlTable table = null;
+
+        if(htmlPage.getTitleText().contains("Premier League")){
+            table = htmlPage.getHtmlElementById("stats_possession_11160");
+        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+            table = htmlPage.getHtmlElementById("stats_possession_11193");
+        }
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
@@ -500,7 +618,13 @@ public class HtmlUnitScraper {
 
     public static void getMiscStatsNew(HtmlPage htmlPage, PlayerRepository playerRepository) {
 
-        final HtmlTable table = htmlPage.getHtmlElementById("stats_misc_11160");
+        HtmlTable table = null;
+
+        if(htmlPage.getTitleText().contains("Premier League")){
+            table = htmlPage.getHtmlElementById("stats_misc_11160");
+        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+            table = htmlPage.getHtmlElementById("stats_misc_11193");
+        }
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
