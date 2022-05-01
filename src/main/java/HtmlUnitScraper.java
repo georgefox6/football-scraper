@@ -6,9 +6,7 @@ import com.gargoylesoftware.htmlunit.html.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class HtmlUnitScraper {
 
@@ -164,28 +162,30 @@ public class HtmlUnitScraper {
 
     private static List<String> getSalarySportLinks() {
         List<String> salarySportLinks = getPremierLeagueSalarySportLinks();
-        salarySportLinks.addAll(getBundesligaSalarySportLinks());
+//        salarySportLinks.addAll(getBundesligaSalarySportLinks());
         return salarySportLinks;
     }
 
     public static List<String> getTransfermarktLinks() {
         List<String> transfermarktLinks = getPremierLeagueTransfermarktLinks();
-        transfermarktLinks.addAll(getBundesligaTransfermarktLinks());
+//        transfermarktLinks.addAll(getBundesligaTransfermarktLinks());
         return transfermarktLinks;
     }
 
     public static List<String> getFBRefLinks(){
         List<String> urlFBRef = getPremierLeagueFBRefLinks();
-        urlFBRef.addAll(getBundesligaFBRefLinks());
+//        urlFBRef.addAll(getBundesligaFBRefLinks());
         return urlFBRef;
     }
 
     public static void main(String[] args) throws Exception {
+
         PlayerRepository playerRepository = new PlayerRepository(em);
         PlayerAttackingPercentileRepository playerAttackingPercentileRepository = new PlayerAttackingPercentileRepository(em);
         PlayerPossessionPercentileRepository playerPossessionPercentileRepository = new PlayerPossessionPercentileRepository(em);
         PlayerDefendingPercentileRepository playerDefendingPercentileRepository = new PlayerDefendingPercentileRepository(em);
         PlayerTraitsRepository playerTraitsRepository = new PlayerTraitsRepository(em);
+        SimilarPlayersRepository similarPlayersRepository = new SimilarPlayersRepository(em);
 
         //Create new webclient
         WebClient webClient = new WebClient();
@@ -255,6 +255,118 @@ public class HtmlUnitScraper {
 
         System.out.println("Player traits done");
         System.out.println(java.time.LocalDateTime.now());
+
+        //Find similar players
+        Optional<Player> pl = playerRepository.findById(89);
+
+        pl.ifPresent(
+                player -> {
+                    System.out.println("Player being compared: " + player.getPlayerName());
+                }
+        );
+
+        playerRepository.findAll().forEach( player1 -> {
+            HashMap<Double, Player> similarityMap = new HashMap();
+            ArrayList<Double> similarityScores = new ArrayList<>();
+            playerRepository.findAll().forEach( player2 -> {
+                double similarity = calculateSimilarity(
+                        playerDefendingPercentileRepository.findByPlayerId(player1.getId()),
+                        playerDefendingPercentileRepository.findByPlayerId(player2.getId()),
+                        playerPossessionPercentileRepository.findByPlayerId(player1.getId()),
+                        playerPossessionPercentileRepository.findByPlayerId(player2.getId()),
+                        playerAttackingPercentileRepository.findByPlayerId(player1.getId()),
+                        playerAttackingPercentileRepository.findByPlayerId(player2.getId())
+                    );
+                similarityMap.put(similarity, player2);
+                similarityScores.add(similarity);
+            });
+            Collections.sort(similarityScores);
+            SimilarPlayers similar = new SimilarPlayers(player1,
+                    similarityMap.get(similarityScores.get(1)),
+                    similarityMap.get(similarityScores.get(2)),
+                    similarityMap.get(similarityScores.get(3)),
+                    similarityMap.get(similarityScores.get(4)),
+                    similarityMap.get(similarityScores.get(5)));
+            similarPlayersRepository.save(similar);
+
+            System.out.println("Similar player done - " + player1.getPlayerName());
+            System.out.println(java.time.LocalDateTime.now());
+        });
+
+        System.out.println("Similar players done");
+        System.out.println(java.time.LocalDateTime.now());
+
+    }
+
+    private static double calculateDefensiveSimilarity(PlayerDefendingPercentile player1Percentile, PlayerDefendingPercentile player2Percentile) {
+        double difference = Math.sqrt(
+                (Math.pow(((double)player1Percentile.getBlocksPer90Percentile()/100 - (double)player2Percentile.getBlocksPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getHeadersWonPer90Percentile()/100 - (double)player2Percentile.getHeadersWonPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getInterceptionsPer90Percentile()/100 - (double)player2Percentile.getInterceptionsPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getPressuresPer90Percentile()/100 - (double)player2Percentile.getPressuresPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getTacklesWonPer90Percentile()/100 - (double)player2Percentile.getTacklesWonPer90Percentile()/100),2))/5
+        );
+
+        return difference;
+    }
+
+    private static double calculatePossessionSimilarity(PlayerPossessionPercentile player1Percentile, PlayerPossessionPercentile player2Percentile) {
+        double difference = Math.sqrt(
+                (Math.pow(((double)player1Percentile.getAssistsPer90Percentile()/100 - (double)player2Percentile.getAssistsPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getCrossesPer90Percentile()/100 - (double)player2Percentile.getCrossesPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getDribblesPer90Percentile()/100 - (double)player2Percentile.getDribblesPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getExpectedAssistsPer90Percentile()/100 - (double)player2Percentile.getExpectedAssistsPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getPassesCompletedPer90Percentile()/100 - (double)player2Percentile.getPassesCompletedPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getPassesControlledPer90Percentile()/100 - (double)player2Percentile.getPassesControlledPer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getProgressiveDribbleDistancePer90Percentile()/100 - (double)player2Percentile.getProgressiveDribbleDistancePer90Percentile()/100),2) +
+                Math.pow(((double)player1Percentile.getProgressivePassingDistancePer90Percentile()/100 - (double)player2Percentile.getProgressivePassingDistancePer90Percentile()/100),2)) / 8
+        );
+
+        return difference;
+    }
+
+    private static double calculateAttackingSimilarity(PlayerAttackingPercentile player1Percentile, PlayerAttackingPercentile player2Percentile) {
+        double difference = Math.sqrt(
+                (Math.pow(((double)player1Percentile.getExpectedGoalsPer90Percentile()/100 - (double)player2Percentile.getExpectedGoalsPer90Percentile()/100),2) +
+                        Math.pow(((double)player1Percentile.getFreeKickShotsPer90Percentile()/100 - (double)player2Percentile.getFreeKickShotsPer90Percentile()/100),2) +
+                        Math.pow(((double)player1Percentile.getGoalsPer90Percentile()/100 - (double)player2Percentile.getGoalsPer90Percentile()/100),2) +
+                        Math.pow(((double)player1Percentile.getPenaltyGoalsPer90Percentile()/100 - (double)player2Percentile.getPenaltyGoalsPer90Percentile()/100),2) +
+                        Math.pow(((double)player1Percentile.getShotsOnTargetPer90Percentile()/100 - (double)player2Percentile.getShotsOnTargetPer90Percentile()/100),2) +
+                        Math.pow(((double)player1Percentile.getShotsPer90Percentile()/100 - (double)player2Percentile.getShotsPer90Percentile()/100),2)) / 6
+        );
+
+        return difference;
+    }
+
+    private static double calculateSimilarity(PlayerDefendingPercentile player1DefendingPercentile,
+                                              PlayerDefendingPercentile player2DefendingPercentile,
+                                              PlayerPossessionPercentile player1PossessionPercentile,
+                                              PlayerPossessionPercentile player2PossessionPercentile,
+                                              PlayerAttackingPercentile player1AttackingPercentile,
+                                              PlayerAttackingPercentile player2AttackingPercentile){
+
+        double difference = Math.sqrt(
+            (Math.pow(((double)player1DefendingPercentile.getBlocksPer90Percentile()/100 - (double)player2DefendingPercentile.getBlocksPer90Percentile()/100),2) +
+                Math.pow(((double)player1DefendingPercentile.getHeadersWonPer90Percentile()/100 - (double)player2DefendingPercentile.getHeadersWonPer90Percentile()/100),2) +
+                Math.pow(((double)player1DefendingPercentile.getInterceptionsPer90Percentile()/100 - (double)player2DefendingPercentile.getInterceptionsPer90Percentile()/100),2) +
+                Math.pow(((double)player1DefendingPercentile.getPressuresPer90Percentile()/100 - (double)player2DefendingPercentile.getPressuresPer90Percentile()/100),2) +
+                Math.pow(((double)player1DefendingPercentile.getTacklesWonPer90Percentile()/100 - (double)player2DefendingPercentile.getTacklesWonPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getAssistsPer90Percentile()/100 - (double)player2PossessionPercentile.getAssistsPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getCrossesPer90Percentile()/100 - (double)player2PossessionPercentile.getCrossesPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getDribblesPer90Percentile()/100 - (double)player2PossessionPercentile.getDribblesPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getExpectedAssistsPer90Percentile()/100 - (double)player2PossessionPercentile.getExpectedAssistsPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getPassesCompletedPer90Percentile()/100 - (double)player2PossessionPercentile.getPassesCompletedPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getPassesControlledPer90Percentile()/100 - (double)player2PossessionPercentile.getPassesControlledPer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getProgressiveDribbleDistancePer90Percentile()/100 - (double)player2PossessionPercentile.getProgressiveDribbleDistancePer90Percentile()/100),2) +
+                Math.pow(((double)player1PossessionPercentile.getProgressivePassingDistancePer90Percentile()/100 - (double)player2PossessionPercentile.getProgressivePassingDistancePer90Percentile()/100),2) +
+                Math.pow(((double)player1AttackingPercentile.getExpectedGoalsPer90Percentile()/100 - (double)player2AttackingPercentile.getExpectedGoalsPer90Percentile()/100),2) +
+                Math.pow(((double)player1AttackingPercentile.getFreeKickShotsPer90Percentile()/100 - (double)player2AttackingPercentile.getFreeKickShotsPer90Percentile()/100),2) +
+                Math.pow(((double)player1AttackingPercentile.getGoalsPer90Percentile()/100 - (double)player2AttackingPercentile.getGoalsPer90Percentile()/100),2) +
+                Math.pow(((double)player1AttackingPercentile.getPenaltyGoalsPer90Percentile()/100 - (double)player2AttackingPercentile.getPenaltyGoalsPer90Percentile()/100),2) +
+                Math.pow(((double)player1AttackingPercentile.getShotsOnTargetPer90Percentile()/100 - (double)player2AttackingPercentile.getShotsOnTargetPer90Percentile()/100),2) +
+                Math.pow(((double)player1AttackingPercentile.getShotsPer90Percentile()/100 - (double)player2AttackingPercentile.getShotsPer90Percentile()/100),2)) / 19
+            );
+        return difference;
     }
 
 

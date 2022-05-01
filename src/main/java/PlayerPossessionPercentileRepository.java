@@ -1,3 +1,4 @@
+import Models.PlayerDefendingPercentile;
 import Models.PlayerPossessionPercentile;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,17 @@ public class PlayerPossessionPercentileRepository {
 
     public List<PlayerPossessionPercentile> findAll() {
         return entityManager.createQuery("from PlayerPossessionPercentile player_possession_percentile", PlayerPossessionPercentile.class).getResultList();
+    }
+
+//    public Optional<PlayerPossessionPercentile> findByPlayerId(int playerId) {
+//        var ppp = entityManager.createNativeQuery("SELECT * FROM player_possession_percentile player_possession_percentile where player_possession_percentile.playerId = ?1", PlayerPossessionPercentile.class).setParameter(1, playerId).getResultList();
+//        var p = (PlayerPossessionPercentile)ppp.get(0);
+//        return p != null ? Optional.of((PlayerPossessionPercentile)p) : Optional.empty();
+//    }
+
+    public PlayerPossessionPercentile findByPlayerId(int playerId) {
+        var ppp = entityManager.createNativeQuery("SELECT * FROM player_possession_percentile player_possession_percentile where player_possession_percentile.playerId = ?1", PlayerPossessionPercentile.class).setParameter(1, playerId).getResultList();
+        return (PlayerPossessionPercentile)ppp.get(0);
     }
 
     public Optional<PlayerPossessionPercentile> save(PlayerPossessionPercentile playerPossessionPercentile) {

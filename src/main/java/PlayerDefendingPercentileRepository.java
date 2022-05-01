@@ -16,7 +16,18 @@ public class PlayerDefendingPercentileRepository {
     }
 
     public List<PlayerDefendingPercentile> findAll() {
-        return entityManager.createQuery("from playerDefendingPercentile player_defending_percentile", PlayerDefendingPercentile.class).getResultList();
+        return entityManager.createQuery("from PlayerDefendingPercentile player_defending_percentile", PlayerDefendingPercentile.class).getResultList();
+    }
+
+//    public Optional<PlayerDefendingPercentile> findByPlayerId(int playerId) {
+//        var pdp = entityManager.createNativeQuery("SELECT * FROM player_defending_percentile player_defending_percentile where player_defending_percentile.playerId = ?1", PlayerDefendingPercentile.class).setParameter(1, playerId).getResultList();
+//        var p = (PlayerDefendingPercentile)pdp.get(0);
+//        return p != null ? Optional.of((PlayerDefendingPercentile)p) : Optional.empty();
+//    }
+
+    public PlayerDefendingPercentile findByPlayerId(int playerId) {
+        var pdp = entityManager.createNativeQuery("SELECT * FROM player_defending_percentile player_defending_percentile where player_defending_percentile.playerId = ?1", PlayerDefendingPercentile.class).setParameter(1, playerId).getResultList();
+        return (PlayerDefendingPercentile)pdp.get(0);
     }
 
     public Optional<PlayerDefendingPercentile> save(PlayerDefendingPercentile playerDefendingPercentile) {

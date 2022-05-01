@@ -1,5 +1,4 @@
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import Models.PlayerAttackingPercentile;
@@ -16,7 +15,17 @@ public class PlayerAttackingPercentileRepository {
     }
 
     public List<PlayerAttackingPercentile> findAll() {
-        return entityManager.createQuery("from playerAttackingPercentile player_attacking_percentile", PlayerAttackingPercentile.class).getResultList();
+        return entityManager.createQuery("from PlayerAttackingPercentile player_attacking_percentile", PlayerAttackingPercentile.class).getResultList();
+    }
+
+//    public Optional<PlayerAttackingPercentile> findByPlayerId(int playerId) {
+//        var ppp = entityManager.createNativeQuery("SELECT * FROM player_attacking_percentile player_attacking_percentile where player_attacking_percentile.playerId = ?1", PlayerAttackingPercentile.class).setParameter(1, playerId).getResultList();
+//        var p = (PlayerAttackingPercentile)ppp.get(0);
+//        return p != null ? Optional.of((PlayerAttackingPercentile)p) : Optional.empty();
+//    }
+    public PlayerAttackingPercentile findByPlayerId(int playerId) {
+        var ppp = entityManager.createNativeQuery("SELECT * FROM player_attacking_percentile player_attacking_percentile where player_attacking_percentile.playerId = ?1", PlayerAttackingPercentile.class).setParameter(1, playerId).getResultList();
+        return (PlayerAttackingPercentile)ppp.get(0);
     }
 
     public Optional<PlayerAttackingPercentile> save(PlayerAttackingPercentile playerAttackingPercentile) {
