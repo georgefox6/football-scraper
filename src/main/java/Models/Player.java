@@ -1,6 +1,7 @@
 package Models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "players")
@@ -85,10 +86,19 @@ public class Player {
     private String contractEndDate;
     private int marketValue;
     private int wage;
+    private LocalDate dateOfBirth;
 
 
     public Player(){
 
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getImageUrl() {
