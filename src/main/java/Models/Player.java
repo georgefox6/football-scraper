@@ -87,10 +87,19 @@ public class Player {
     private int marketValue;
     private int wage;
     private LocalDate dateOfBirth;
+    private String league;
 
 
     public Player(){
 
+    }
+
+    public String getLeague() {
+        return league;
+    }
+
+    public void setLeague(String league) {
+        this.league = league;
     }
 
     public LocalDate getDateOfBirth() {
