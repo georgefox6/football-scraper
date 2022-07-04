@@ -25,7 +25,7 @@ public class PlayerRepository {
                 .setParameter(1, name)
                 .getSingleResult();
             return player != null ? Optional.of(player) : Optional.empty();
-        } catch (NoResultException e){
+        } catch (Exception e){
             return Optional.empty();
         }
     }

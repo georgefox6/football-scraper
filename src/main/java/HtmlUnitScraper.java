@@ -6,6 +6,8 @@ import com.gargoylesoftware.htmlunit.html.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class HtmlUnitScraper {
@@ -15,26 +17,26 @@ public class HtmlUnitScraper {
 
     public static List<String> getPremierLeagueFBRefLinks() {
         List<String> premierLeagueUrlFBRef = new ArrayList<>();
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/cff3d9bb/Chelsea-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/b8fd03ef/Manchester-City-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/7c21e445/West-Ham-United-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/822bd0ba/Liverpool-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/18bb7c10/Arsenal-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/19538871/Manchester-United-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/d07537b9/Brighton-and-Hove-Albion-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/8cec06e1/Wolverhampton-Wanderers-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/361ca564/Tottenham-Hotspur-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/47c64c55/Crystal-Palace-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/d3fd31cc/Everton-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/a2d435b3/Leicester-City-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/33c895d4/Southampton-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/cd051869/Brentford-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/5bfb9659/Leeds-United-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/8602292d/Aston-Villa-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/2abfe087/Watford-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/943e8050/Burnley-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/b2b47a98/Newcastle-United-Stats");
-        premierLeagueUrlFBRef.add("https://fbref.com/en/squads/1c781004/Norwich-City-Stats");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-arsenal.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-aston-villa.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-brentford.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-brighton.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-burnley.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-chelsea.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-crystal-palace.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-everton.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-leeds-united.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-leicester-city.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-liverpool.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-manchester-city.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-manchester-united.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-newcastle-united.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-norwich-city.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-southampton.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-tottenham.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-watford.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-west-ham.html");
+        premierLeagueUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\PremierLeague\\fbref-wolves.html");
 
         return premierLeagueUrlFBRef;
     }
@@ -93,24 +95,25 @@ public class HtmlUnitScraper {
 
     public static List<String> getBundesligaFBRefLinks(){
         List<String> bundesligaUrlFBRef = new ArrayList<>();
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/054efa67/Bayern-Munich-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/add600ae/Dortmund-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/c7a9f859/Bayer-Leverkusen-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/acbb6a5b/RB-Leipzig-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/a486e511/Freiburg-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/7a41008f/Union-Berlin-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/bc357bf7/Koln-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/033ea6b8/Hoffenheim-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/f0ac8ee6/Eintracht-Frankfurt-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/a224b06a/Mainz-05-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/32f3ee20/Monchengladbach-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/4eaa11d7/Wolfsburg-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/b42c6323/Bochum-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/0cdc4311/Augsburg-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/2818f8bc/Hertha-BSC-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/598bc722/Stuttgart-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/247c4b67/Arminia-Stats");
-        bundesligaUrlFBRef.add("https://fbref.com/en/squads/12192a4c/Greuther-Furth-Stats");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-arminia.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-augsburg.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-bayer-leverkusen.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-bayern-munich.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-bochum.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-dortmund.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-frankfurt.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-freiburg.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-greuther.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-hertha.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-hoffenheim.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-koln.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-leipzig.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-mainz.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-monchengladbach.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-stuttgart.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-union-berlin.html");
+        bundesligaUrlFBRef.add("file:///C:\\Users\\Georg\\IdeaProjects\\football-scraper\\fbref-19-06-2022\\Bundesliga\\fbref-wolfsburg.html");
+
         return bundesligaUrlFBRef;
     }
 
@@ -302,9 +305,6 @@ public class HtmlUnitScraper {
             }
 
             similarPlayersToWrite.add(similar);
-
-            System.out.println("Similar player calculated - " + player1.getPlayerName());
-            System.out.println(java.time.LocalDateTime.now());
         });
 
         System.out.println("Similar players found");
@@ -451,8 +451,8 @@ public class HtmlUnitScraper {
         final HtmlTable table = htmlPage.getFirstByXPath("//*[@id=\"yw1\"]/table");
 
         for (final HtmlTableRow row : table.getRows().subList(1, table.getRowCount())) {
-
             String name = row.getCell(1).asNormalizedText().split("\\r?\\n")[0].trim();
+            String dateOfBirthString = row.getCell(2).asNormalizedText();
             String preferredFoot = row.getCell(5).asNormalizedText();
             String contractEndDate = row.getCell(8).asNormalizedText();
             int marketValue = calculateValue(row.getCell(9).asNormalizedText());
@@ -464,10 +464,20 @@ public class HtmlUnitScraper {
                 if(childElement instanceof HtmlTable){
                     imageUrl = childElement.getFirstElementChild().getFirstElementChild().getFirstElementChild().getFirstElementChild().getAttribute("data-src");
                 }
-
             }
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH);
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+            LocalDate dateOfBirth = null;
+            try{
+                dateOfBirth = LocalDate.parse(dateOfBirthString.split("\\(")[0], formatter);
+            } catch(Exception e){
+                System.out.println(dateOfBirthString);
+            }
+//            LocalDate dateOfBirth = LocalDate.parse(dateOfBirthString.split("\\(")[0], formatter);
+
             Player player = new Player();
+            player.setDateOfBirth(dateOfBirth);
             player.setPlayerPosition(playerPosition);
             player.setPlayerName(name);
             player.setHeight(height);
@@ -495,11 +505,12 @@ public class HtmlUnitScraper {
         String teamName = null;
         HtmlTable table = null;
 
-        if(htmlPage.getTitleText().contains("Premier League")){
-            teamName = htmlPage.getTitleText().replace(" Stats, Premier League | FBref.com", "").replace("2021-2022 ", "");
+        teamName = htmlPage.getHtmlElementById("club-name").asNormalizedText();
+        String league = htmlPage.getHtmlElementById("club-league").asNormalizedText();
+
+        if(league.equals("Premier League")){
             table = htmlPage.getHtmlElementById("stats_standard_11160");
-        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
-            teamName = htmlPage.getTitleText().replace(" Stats, Bundesliga | FBref.com", "").replace("2021-2022 ", "");
+        } else if(league.equals("Bundesliga")){
             table = htmlPage.getHtmlElementById("stats_standard_11193");
         }
 
@@ -507,7 +518,6 @@ public class HtmlUnitScraper {
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
             String playerName = getNameExceptionsFBREF(row.getCell(0).asNormalizedText());
             String playerNation = calculateNation(row.getCell(1).asNormalizedText());
-            //TODO change the value of age to something easier to understand
             String playerAge = row.getCell(3).asNormalizedText();
 
             Optional<Player> player = playerRepository.findByName(playerName);
@@ -516,6 +526,7 @@ public class HtmlUnitScraper {
                 p.setPlayerNation(playerNation);
                 p.setPlayerAge(playerAge);
                 p.setPlayerTeam(finalTeamName);
+                p.setLeague(league);
                 try {
                     p.setMatchesPlayed(Integer.parseInt(row.getCell(4).asNormalizedText()));
                     p.setMatchesStarted(Integer.parseInt(row.getCell(5).asNormalizedText()));
@@ -543,9 +554,11 @@ public class HtmlUnitScraper {
 
         HtmlTable table = null;
 
-        if(htmlPage.getTitleText().contains("Premier League")){
+        String league = htmlPage.getHtmlElementById("club-league").asNormalizedText();
+
+        if(league.equals("Premier League")){
             table = htmlPage.getHtmlElementById("stats_shooting_11160");
-        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+        } else if(league.equals("Bundesliga")){
             table = htmlPage.getHtmlElementById("stats_shooting_11193");
         }
 
@@ -595,11 +608,14 @@ public class HtmlUnitScraper {
 
         HtmlTable table = null;
 
-        if(htmlPage.getTitleText().contains("Premier League")){
+        String league = htmlPage.getHtmlElementById("club-league").asNormalizedText();
+
+        if(league.equals("Premier League")){
             table = htmlPage.getHtmlElementById("stats_passing_11160");
-        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+        } else if(league.equals("Bundesliga")){
             table = htmlPage.getHtmlElementById("stats_passing_11193");
         }
+
 
         for (final HtmlTableRow row : table.getRows().subList(2, table.getRowCount() - 2)) {
 
@@ -638,9 +654,11 @@ public class HtmlUnitScraper {
 
         HtmlTable table = null;
 
-        if(htmlPage.getTitleText().contains("Premier League")){
+        String league = htmlPage.getHtmlElementById("club-league").asNormalizedText();
+
+        if(league.equals("Premier League")){
             table = htmlPage.getHtmlElementById("stats_defense_11160");
-        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+        } else if(league.equals("Bundesliga")){
             table = htmlPage.getHtmlElementById("stats_defense_11193");
         }
 
@@ -687,9 +705,11 @@ public class HtmlUnitScraper {
 
         HtmlTable table = null;
 
-        if(htmlPage.getTitleText().contains("Premier League")){
+        String league = htmlPage.getHtmlElementById("club-league").asNormalizedText();
+
+        if(league.equals("Premier League")){
             table = htmlPage.getHtmlElementById("stats_possession_11160");
-        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+        } else if(league.equals("Bundesliga")){
             table = htmlPage.getHtmlElementById("stats_possession_11193");
         }
 
@@ -724,9 +744,11 @@ public class HtmlUnitScraper {
 
         HtmlTable table = null;
 
-        if(htmlPage.getTitleText().contains("Premier League")){
+        String league = htmlPage.getHtmlElementById("club-league").asNormalizedText();
+
+        if(league.equals("Premier League")){
             table = htmlPage.getHtmlElementById("stats_misc_11160");
-        } else if(htmlPage.getTitleText().contains("Bundesliga")) {
+        } else if(league.equals("Bundesliga")){
             table = htmlPage.getHtmlElementById("stats_misc_11193");
         }
 
