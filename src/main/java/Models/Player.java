@@ -14,7 +14,7 @@ public class Player {
     private String playerName;
     private String playerNation;
     private String playerPosition;
-    private String playerAge;
+    private int playerAge;
     private String playerTeam;
     private String imageUrl;
 
@@ -134,7 +134,7 @@ public class Player {
         this.playerPosition = playerPosition;
     }
 
-    public void setPlayerAge(String playerAge) {
+    public void setPlayerAge(int playerAge) {
         this.playerAge = playerAge;
     }
 
@@ -342,7 +342,7 @@ public class Player {
         return playerPosition;
     }
 
-    public String getPlayerAge() {
+    public int getPlayerAge() {
         return playerAge;
     }
 
